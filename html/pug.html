@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pug Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .question {
+            margin: 10px 0;
+        }
+        button {
+            margin-top: 20px;
+        }
+        .timer {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Pug Test 51 ta</h1>
+
+<div id="quiz">
+    <!-- Savollar joylanadi -->
+</div>
+
+<div id="timer" class="timer">20 soniya qoldi!</div>
+<div>
+    <button id="submit">Natijani ko'rsatish</button>
+</div>
+<div id="result"></div>
+
+<script>
+const quizQuestions = [
+    {
+        "question": "Pug nima?",
+        "options": ["HTML templating engine", "JavaScript framework", "CSS preprocessor", "Web server"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda sintaksis qanday ko'rinadi?",
+        "options": ["HTML sintaksisi", "Indentation (bo'sh joy) sintaksisi", "JavaScript sintaksisi", "Barchasi"],
+        "answer": 1
+    },
+    {
+        "question": "Pugda o'zgaruvchilar qanday e'lon qilinadi?",
+        "options": ["- var name = 'value'", "var name = 'value'", "name: 'value'", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda shartli ifodalar qanday yoziladi?",
+        "options": ["if (condition)", "if condition", "if condition then", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda ko'p qatorli tekstni qanday ko'rsatamiz?",
+        "options": ["| This is a line\n| This is another line", "line 1 \n line 2", "This is a line This is another line", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda ro'yxatni qanday yozamiz?",
+        "options": ["ul\n  li Item 1\n  li Item 2", "list: [Item 1, Item 2]", "item1, item2", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda atributlar qanday ko'rsatiladi?",
+        "options": ["div(class='container')", "div.container", "div[class='container']", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda qaysi belgi bilan ko'rsatilgan belgilashlar yozilishi mumkin?",
+        "options": ["#", ".", ":", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Pugda o'zgaruvchilardan qanday foydalanamiz?",
+        "options": ["#{variable}", "= variable", "var(variable)", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda HTML elementini qanday yaratamiz?",
+        "options": ["div", "p", "h1", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Pugda nasl olishdan qanday foydalanamiz?",
+        "options": ["extends layout", "inherit layout", "include layout", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda inline ifodalardan qanday foydalanamiz?",
+        "options": ["p= 'Inline text'", "p: 'Inline text'", "p 'Inline text'", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda mixin qanday yaratiladi?",
+        "options": ["mixin mixinName() { ... }", "mixin: mixinName", "+mixinName", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda mixinga argumentlarni qanday beramiz?",
+        "options": ["+mixinName(arg)", "mixinName(arg)", "mixin: mixinName(arg)", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda loop qanday yoziladi?",
+        "options": ["each item in array", "for item in array", "loop item in array", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda izohlar qanday ko'rsatiladi?",
+        "options": ["// Comment", "//- Comment", "/* Comment */", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Pugda komponentlar qanday yaratiladi?",
+        "options": ["mixin orqali", "inline orqali", "class orqali", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda HTML attributlardan qanday foydalanamiz?",
+        "options": ["div(class=className)", "div[class=className]", "div.className", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda ichki elementlar qanday yaratiladi?",
+        "options": ["div\n  p Nested", "div -> p Nested", "div { p: Nested }", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda interpolatsiya qanday ko'rinadi?",
+        "options": ["#{value}", "= value", "value", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda doctype qanday ko'rsatiladi?",
+        "options": ["doctype html", "doctype: html", "html", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda inline stil qanday yoziladi?",
+        "options": ["div(style='color:red;')", "div(style='color:red')", "div: style='color:red;'", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda scriptni qanday import qilamiz?",
+        "options": ["script(src='script.js')", "script: src='script.js'", "import script 'script.js'", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda CSS faylini qanday ulaymiz?",
+        "options": ["link(rel='stylesheet', href='style.css')", "link: rel='stylesheet', src='style.css'", "import 'style.css'", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda sahifa layoutini qanday yaratish mumkin?",
+        "options": ["extends layout.pug", "layout: extends('layout.pug')", "include layout.pug", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda komponentga foydalanuvchi ma'lumotlar berish qanday amalga oshiriladi?",
+        "options": ["p Salom, #{name}", "p Salom, name", "div: Salom, name", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda o'zgaruvchilardan qanday qilib inline text sifatida foydalanamiz?",
+        "options": ["p= 'Hello ' + name", "= 'Hello ' + name", "p: 'Hello ' + name", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda URL'ni qanday ko'rsatamiz?",
+        "options": ["a(href='https://example.com') Example", "link: href='https://example.com'", "url: 'https://example.com'", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda JSON ob'ektlarini qanday ko'rsatish mumkin?",
+        "options": ["p= JSON.stringify(object)", "p: JSON.stringify(object)", "p object", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda array ustida qanday ishlaymiz?",
+        "options": ["each item in array", "loop item in array", "for each item in array", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda xatolikni qanday aniqlaymiz?",
+        "options": ["if (error) Error Here", "if error Error Here", "error: true", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda class qanday ishlatiladi?",
+        "options": ["div(class='className')", "div.className", "class: 'className'", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda CSS display property qanday ko'rsatiladi?",
+        "options": ["style='display:none;'", "style='display none'", "style(display='none')", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda include qanday ishlatiladi?",
+        "options": ["include file.pug", "import file.pug", "require file.pug", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda section qanday yaratiladi?",
+        "options": ["section\n  h1 Title", "section: h1 Title", "section { h1: Title }", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda to'g'ridan-to'g'ri HTML yozish mumkinmi?",
+        "options": ["Ha", "Yo'q", "Faoliyat bu ba'zan", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda meta taglari qanday ko'rinadi?",
+        "options": ["meta(charset='UTF-8')", "meta: charset='UTF-8'", "meta: 'UTF-8'", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda rasm qanday ko'rsatiladi?",
+        "options": ["img(src='image.png')", "image: src='image.png'", "img: src='image.png'", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda video qanday ko'rsatiladi?",
+        "options": ["video(src='video.mp4')", "video: src='video.mp4'", "src: video.mp4", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda kerakli faylga qachon qo'shiladi?",
+        "options": ["script(src='script.js')", "add script: src='script.js'", "include script.js", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda fallback ni qanday yozamiz?",
+        "options": ["div: fallback", "div(fallback)", "div: 'fallback'", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda maqolalarni qanday iboralarda e'lon qilamiz?",
+        "options": ["article\n  h1 Title", "article: h1 Title", "article { h1: Title }", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda form elementlarini qanday tayyorlaysiz?",
+        "options": ["form\n  input(type='text')", "form: input(type='text')", "form { input(type='text') }", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda area tagini qanday ko'rinishga keltiramiz?",
+        "options": ["area(coords='coords')", "area: coords='coords'", "area { coords: coords }", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda formada inputlar qachon ko'rsatiladi?",
+        "options": ["input(type='text')", "input: type='text'", "input: 'text'", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda xatoliklarni qanday ko'rsatamiz?",
+        "options": ["if (error)", "error if true", "error: if", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda saqlash xususiyatlari qanday ko'rinadi?",
+        "options": ["barchasi", "faqat ma'lum xususiyatlar", "do'konda saqlanmasligi shart", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda o'lchamlar qanday ko'rinadi?",
+        "options": ["width='100%'", "100%", "width:100%;", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda o'zgaruvchilarni qanday ko'rsatamiz?",
+        "options": ["p= variable", "p: variable", "p variable", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda xatolikni ko'rsatishning eng yaxshi usuli qanday?",
+        "options": ["error: true", "if error throw error", "throw error", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Pugda sahifa muqovasini yaratish qanday ko'rinadi?",
+        "options": ["doctype html", "document: html", "html: document", "none"],
+        "answer": 0
+    }
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+let timer;
+const timeLimit = 20;
+const wrongAnswers = []; // Xato berilgan savollar uchun ro'yxat
+
+function loadQuiz() {
+    const quizContainer = document.getElementById('quiz');
+    const timerElem = document.getElementById('timer');
+    quizContainer.innerHTML = '';
+    timerElem.innerHTML = `20 soniya qoldi!`;
+
+    const q = quizQuestions[currentQuestionIndex];
+
+    const questionElem = document.createElement('div');
+    questionElem.classList.add('question');
+    questionElem.innerHTML = `<p>${currentQuestionIndex + 1}. ${q.question}</p>`;
+
+    q.options.forEach((option, i) => {
+        questionElem.innerHTML += `
+            <label>
+                <input type="radio" name="question${currentQuestionIndex}" value="${i}" onchange="checkAnswer(this)"> ${option}
+            </label><br>
+        `;
+    });
+
+    quizContainer.appendChild(questionElem);
+
+    startTimer();
+}
+
+function startTimer() {
+    let timeRemaining = timeLimit;
+    const timerElem = document.getElementById('timer');
+
+    timer = setInterval(() => {
+        timeRemaining--;
+        timerElem.innerHTML = `${timeRemaining} soniya qoldi!`;
+
+        if (timeRemaining <= 0) {
+            clearInterval(timer);
+            moveToNextQuestion();  // Vaqt tugaganida keyingi savolga o'tish
+        }
+    }, 1000);
+}
+
+function checkAnswer(selectedOption) {
+    clearInterval(timer); // Timerni to'xtatish
+    const q = quizQuestions[currentQuestionIndex];
+
+    // Javobni tekshirish
+    if (parseInt(selectedOption.value) === q.answer) {
+        score++;
+    } else {
+        wrongAnswers.push(currentQuestionIndex); // Xato javob berilgan savol indeksini saqlash
+    }
+
+    moveToNextQuestion(); // Keyingi savolga o'ting
+}
+
+function moveToNextQuestion() {
+    if (currentQuestionIndex < quizQuestions.length - 1) {
+        currentQuestionIndex++;
+        loadQuiz();  // Yangi savolni yuklash
+    } else {
+        showResults(); // Savollar tugadi, natijalarni ko'rsatish
+    }
+}
+
+function showResults() {
+    clearInterval(timer);
+    const resultElem = document.getElementById('result');
+    let resultHTML = `<h2>Natijalar</h2><p>Siz ${score} ta savolga to'g'ri javob berdingiz!</p>`;
+
+    if (wrongAnswers.length > 0) {
+        resultHTML += "<h3>Xato berilgan savollar:</h3>";
+        wrongAnswers.forEach(index => {
+            const question = quizQuestions[index];
+            resultHTML += `<p>${index + 1}. ${question.question} <br> To'g'ri javob: ${question.options[question.answer]}</p>`;
+        });
+    }
+
+    resultElem.innerHTML = resultHTML;
+}
+
+document.getElementById('submit').addEventListener('click', showResults);
+
+loadQuiz();
+</script>
+
+</body>
+</html>

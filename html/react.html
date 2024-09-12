@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .question {
+            margin: 10px 0;
+        }
+        button {
+            margin-top: 20px;
+        }
+        .timer {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<h1>React Test 71 ta</h1>
+
+<div id="quiz">
+</div>
+
+<div id="timer" class="timer">20 soniya qoldi!</div>
+<div>
+    <button id="submit">Natijani ko'rsatish</button>
+</div>
+<div id="result"></div>
+
+<script>
+const quizQuestions = [
+    {
+        "question": "React nima?",
+        "options": ["JavaScript kutubxonasi", "CSS kutubxonasi", "HTML elementlari", "Barcha to'g'ri"],
+        "answer": 0
+    },
+    {
+        "question": "React komponentlari nimadan tashkil topadi?",
+        "options": ["JSX", "CSS", "HTML", "JSON"],
+        "answer": 0
+    },
+    {
+        "question": "React state nima?",
+        "options": ["Qisqa muddatli xotira", "Global o'zgaruvchilar", "HTML elementi", "CSS klassi"],
+        "answer": 0
+    },
+    {
+        "question": "Komponentni qanday yaratamiz?",
+        "options": ["function", "class", "arrow function", "barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Reactda qanday qilib komponentlarni birlashtiradi?",
+        "options": ["import", "include", "require", "extend"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda props nima?",
+        "options": ["Komponentlarga beriladigan parametrlar", "O'zgaruvchilar", "State elementlari", "JSX elementlari"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda holatni qanday yangilash mumkin?",
+        "options": ["setState()", "updateState()", "changeState()", "modifyState()"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda xatolikni qanday tutasiz?",
+        "options": ["try-catch", "errorBoundary", "throw", "handleError"],
+        "answer": 1
+    },
+    {
+        "question": "Reactda kengaytirilgan komponentlar qanday nomlanadi?",
+        "options": ["Higher-Order Components (HOC)", "Wrapped Components", "Extended Components", "Super Components"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda qaysi metod komponentlarni yangilaydi?",
+        "options": ["render()", "update()", "componentDidUpdate()", "getDerivedStateFromProps()"],
+        "answer": 2
+    },
+    {
+        "question": "Reactda useState ni qachon ishlatamiz?",
+        "options": ["Functional komponentlarda", "Class komponentlarda", "Har qanday joyda", "CSS fayllarida"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda routingni qanday amalga oshiramiz?",
+        "options": ["react-router", "react-nav", "react-routing", "react-link"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda qaysi xususiyatlar bilan application holatini saqlash mumkin?",
+        "options": ["useReducer", "useContext", "useState", "barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Reactda komponentlar qanday turli uslubda yozilishi mumkin?",
+        "options": ["Functional va Class", "HTML", "CSS", "PHP"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda eventlar qanday ishlaydi?",
+        "options": ["Media queries", "Virtual DOM", "Synthetic events", "Real DOM"],
+        "answer": 2
+    },
+    {
+        "question": "Reactda qaysi API dan foydalanamiz?",
+        "options": ["Context API", "State API", "Effect API", "Lifecycle API"],
+        "answer": 0
+    },
+    {
+        "question": "Reactni kim ishlab chiqdi?",
+        "options": ["Facebook", "Google", "Microsoft", "Twitter"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda qaysi metod komponentni yaratish uchun ishlatiladi?",
+        "options": ["constructor()", "createComponent()", "initComponent()", "renderComponent()"],
+        "answer": 0
+    },
+    {
+        "question": "React component lifecycleda qaysi metod yo'q?",
+        "options": ["componentDidMount", "componentWillReceiveProps", "componentDidUpdate", "componentWillRender"],
+        "answer": 3
+    },
+    {
+        "question": "Reactda qachon useEffectni ishlatamiz?",
+        "options": ["State o'zgarganda", "Komponent dastlabki ishlanayotganda", "API dan ma'lumot olish vaqti", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Reactda propTypes nima?",
+        "options": ["Propsning turini tekshirish", "Komponentlar ro'yxati", "State qiymati", "CSS klasslari"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda qaysi xususiyat reaktiv dasturlashni ta'minlaydi?",
+        "options": ["Virtual DOM", "Real DOM", "Redux", "Component Lifecycles"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda faqat bitta komponentni render qilish uchun qanday ishlatiladi?",
+        "options": ["ReactDOM.render()", "renderComponent()", "createElement()", "createRender()"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda state va props o'rtasidagi farq nima?",
+        "options": ["State ichki, props tashqi ma'lumotlar", "Ikkalasi bir xil", "Ikkinchisi faqat raqamli", "State komponentlar o'rtasida uzatiladi"],
+        "answer": 0
+    },
+    {
+        "question": "Qaysi React kutubxonasi global holatlarni boshqarish uchun eng mashhur hisoblanadi?",
+        "options": ["Redux", "MobX", "Recoil", "Barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda qaysi mantiqiy usul bilan funksiyalarni yozamiz?",
+        "options": ["Functional Programming", "OOP", "Declarative Programming", "Procedural Programming"],
+        "answer": 0
+    },
+    {
+        "question": "React komponentlarining qaysi turi davlatni boshqaradi?",
+        "options": ["Class komponentlar", "Functional komponentlar", "Arrow komponentlar", "Barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda useEffect empirik qoidasi nima?",
+        "options": ["Cleanup qaytarishi", "State va props nazorati", "Rendering vaqtining aniqligi", "Ikkita propsni ham kuzatmoq"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda qaysi metodlar navigatsiya yaratish uchun ishlatiladi?",
+        "options": ["BrowserRouter va Route", "Link va Navigate", "Redirect va Route", "Barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda qaysi komponent ishlatish kerak?",
+        "options": ["Functional", "Class", "Native", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Reactda qaysi uslub API dan foydalaniladi?",
+        "options": ["Hooks API", "State API", "Effect API", "Class API"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda DOMni qanday o'zgartiramiz?",
+        "options": ["setState", "updateDOM", "reactDOM", "render"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda yuqori sifatli xatolik tutish uchun qanday ishlatamiz?",
+        "options": ["Error Boundaries", "catch", "try-catch", "throw"],
+        "answer": 0
+    },
+    {
+        "question": "React komonenti qanday holatda yaratilishi mumkin?",
+        "options": ["Klass yoki funksional", "Foydalanuvchi yordamida", "Tashqi kutubxona orqali", "Barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda reducer nima?",
+        "options": ["Holatni yangilovchi funksiya", "Xatolarni tuzatish", "Komponent yaratish", "Sinfni e'lon qilish"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda qaysi elementni o'chirish uchun ishlatamiz?",
+        "options": ["unmount", "remove", "destroy", "dispose"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda komponentlar qachon yangilanadi?",
+        "options": ["State o'zgaradigan va props o'zgaradigan holatda", "Shartli ravishda", "Har doim", "Aslida buni bilmaymiz"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda hooklardan foydalanish nima?",
+        "options": ["Sodda komponentlarni yozish", "Holatlarni boshqarish", "Asosiy komponent joriy qilish", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Reactda dynamic rendering uchun qaysi usuldan foydalanamiz?",
+        "options": ["Conditional rendering", "Static rendering", "Direct rendering", "Synchronous rendering"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda qaysi usul bilan API dan ma'lumot olish mumkin?",
+        "options": ["Fetch", "Axios", "AJAX", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Reactda default props nima?",
+        "options": ["Propsning afzal qiymati", "Xususiyatlarning ro'yxati", "Komponentlarni yaratish", "Holatlarni yangilash"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda higher-order komponentlar qanday ishlatiladi?",
+        "options": ["Moda komponentlar", "Funktsional komponentni o'rab olish", "Modal ochish", "Dars berish"],
+        "answer": 1
+    },
+    {
+        "question": "Reactda modulni qanday ishlatamiz?",
+        "options": ["import", "require", "export", "barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda qaysi protsessor grafik dasturlashda ishlatiladi?",
+        "options": ["React Fiber", "React Bridge", "React Core", "React End"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda state har bir komponente xosmi?",
+        "options": ["Ha", "Yo'q", "O'rta", "Uch turli"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda qaysi fazaga ega bo'ladi?",
+        "options": ["Initial, Update, Unmount", "Create, Load, Destroy", "Start, Stop, End", "Barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda faqat bitta komponentdan foydalanadiganma?",
+        "options": ["Bu mumkin", "Buni kiritmaslik kerak", "O'zaro bog'lanish yo'q", "Barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda xususiyatlar qanday ishlatiladi?",
+        "options": ["Komponentlarga ma'lumot uzatadi", "Fayllarni yuklaydi", "State o'zgaruvchan", "Ma'lumot to'plami"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda qaysi atributlar bilan forma generatsiya qilinadi?",
+        "options": ["onChange, onSubmit", "onLoad, onPause", "onClick, onMouseOver", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda integrations qilish qaysi kodlar orqali ko'rsatiladi?",
+        "options": ["npm install", "yarn add", "manual kod", "barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Reactda qachon useMemo dan foydalanamiz?",
+        "options": ["Mahsulotni optimallashtirish uchun", "Xatoliklarni teşkil qilmang", "Ishlatmaslik kerak", "Osonlashtirish"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda holatlarni kuzatish qanday ko'rsatiladi?",
+        "options": ["UseEffect", "UseReducer", "UseState", "Barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda additional props nimalardan iborat?",
+        "options": ["Bo'linmalar, stili, allergiya", "Parametrlar, ma'lumotlar, ob'ektlar", "O'zgaruvchilar, classname", "Fayllar"],
+        "answer": 1
+    },
+    {
+        "question": "Reactda oqibat o'zgaruvchanlik qaysi joyda ishlatiladi?",
+        "options": ["State o'zgarishida", "Props o'zgarganda", "Barchasi", "Ijro etishda"],
+        "answer": 2
+    },
+    {
+        "question": "Reactda qanday qilib advantageous maqsadlarini rejalashtiramiz?",
+        "options": ["React Profiler", "Virtual Masalalar", "Debug ila bartaraf", "State o'zgarishlarini qo'lga olish"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda komponentlarni muvofiqlashtirish",
+        "options": ["Prop drilling", "Context API", "Global agentlar", "Barchasi"],
+        "answer": 1
+    },
+    {
+        "question": "Reactda ma'lumotlarni qanday maqsadlar uchun tasvirlash mumkin?",
+        "options": ["Darslarga aniqlik kiritish", "Boshqa komponentlarni chizish", "Modalni ochish", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Reactda qaysi metod xuddi o'sha vaqtni to'ldiradi?",
+        "options": ["setState()", "updateState()", "componentWillReceiveProps()", "componentWillRender()"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda qaysi hoolat keyinchalik tiklanadi?",
+        "options": ["State o'zgarishi", "Ustunlik", "Barchasi", "O'zaro bog'lanish"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda shartli render qachon amalga oshiriladi?",
+        "options": ["if statement yordamida", "komponent qog'ozlari", "Barchasi", "Funksiya yordamida"],
+        "answer": 0
+    },
+    {
+        "question": "React komponentlarini qanday rejalashtiriladi?",
+        "options": ["Explicit rejalashtirish", "Independent rejalashtirmalar", "Afzal maksimalizatsiya", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "React komponentlarida qaysi sinfda birlashtirilishi kerak?",
+        "options": ["Container komponentlari", "Presentational komponentlar", "O'zaro bog'langan komponentlar", "Barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "React komponensida meetod vaqtini belgilash qanday bo'ladi?",
+        "options": ["setTimeout", "setInterval", "requestAnimationFrame", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Reactda qaysi nai xususiyatlar muhimdir?",
+        "options": ["PropTypes", "Context API", "Hooks", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "React komponenti belgilaydigan metodlar bilan qanday ifodalaymiz?",
+        "options": ["Class-based yoki Functional logic", "Direct logic", "Naive logic", "Barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "React komponentini yaratish uchun buni qanday belgilash mumkin?",
+        "options": ["value", "props", "parameters", "aspects"],
+        "answer": 1
+    },
+    {
+        "question": "Reactda DOMga qanday kiramiz?",
+        "options": ["document.getElementById()", "ReactDOM.render()", "document.body", "document.querySelector()"],
+        "answer": 1
+    },
+    {
+        "question": "Reactda formalar uchun ishlatiladigan usul?",
+        "options": ["Controlled forms", "Uncontrolled forms", "Barchasi", "Non-reactive forms"],
+        "answer": 0
+    },
+    {
+        "question": "Reactda qaysi komponent xususiyati outdatemera",
+        "options": ["useUser", "useHistory", "useEffect", "useState"],
+        "answer": 1
+    },
+    {
+        "question": "Reactda qanday qilib render qilingan komponentda global o'zgartirishni qanday bajarish kerak?",
+        "options": ["Static rasm", "Reusable component", "Shared component", "HOC"],
+        "answer": 3
+    },
+    {
+        "question": "React dasturlarini qanday deb belgilaydi?",
+        "options": ["Components"]
+    }
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+let timer;
+const timeLimit = 20;
+const wrongAnswers = []; // Xato berilgan savollar uchun ro'yxat
+
+function loadQuiz() {
+    const quizContainer = document.getElementById('quiz');
+    const timerElem = document.getElementById('timer');
+    quizContainer.innerHTML = '';
+    timerElem.innerHTML = `20 soniya qoldi!`;
+
+    const q = quizQuestions[currentQuestionIndex];
+
+    const questionElem = document.createElement('div');
+    questionElem.classList.add('question');
+    questionElem.innerHTML = `<p>${currentQuestionIndex + 1}. ${q.question}</p>`;
+
+    q.options.forEach((option, i) => {
+        questionElem.innerHTML += `
+            <label>
+                <input type="radio" name="question${currentQuestionIndex}" value="${i}" onchange="checkAnswer(this)"> ${option}
+            </label><br>
+        `;
+    });
+
+    quizContainer.appendChild(questionElem);
+
+    startTimer();
+}
+
+function startTimer() {
+    let timeRemaining = timeLimit;
+    const timerElem = document.getElementById('timer');
+
+    timer = setInterval(() => {
+        timeRemaining--;
+        timerElem.innerHTML = `${timeRemaining} soniya qoldi!`;
+
+        if (timeRemaining <= 0) {
+            clearInterval(timer);
+            moveToNextQuestion();  // Vaqt tugaganida keyingi savolga o'tish
+        }
+    }, 1000);
+}
+
+function checkAnswer(selectedOption) {
+    clearInterval(timer); // Timerni to'xtatish
+    const q = quizQuestions[currentQuestionIndex];
+
+    // Javobni tekshirish
+    if (parseInt(selectedOption.value) === q.answer) {
+        score++;
+    } else {
+        wrongAnswers.push(currentQuestionIndex); // Xato javob berilgan savol indeksini saqlash
+    }
+
+    moveToNextQuestion(); // Keyingi savolga o'ting
+}
+
+function moveToNextQuestion() {
+    if (currentQuestionIndex < quizQuestions.length - 1) {
+        currentQuestionIndex++;
+        loadQuiz();  // Yangi savolni yuklash
+    } else {
+        showResults(); // Savollar tugadi, natijalarni ko'rsatish
+    }
+}
+
+function showResults() {
+    clearInterval(timer);
+    const resultElem = document.getElementById('result');
+    let resultHTML = `<h2>Natijalar</h2><p>Siz ${score} ta savolga to'g'ri javob berdingiz!</p>`;
+
+    if (wrongAnswers.length > 0) {
+        resultHTML += "<h3>Xato berilgan savollar:</h3>";
+        wrongAnswers.forEach(index => {
+            const question = quizQuestions[index];
+            resultHTML += `<p>${index + 1}. ${question.question} <br> To'g'ri javob: ${question.options[question.answer]}</p>`;
+        });
+    }
+
+    resultElem.innerHTML = resultHTML;
+}
+
+document.getElementById('submit').addEventListener('click', showResults);
+
+loadQuiz();
+</script>
+
+</body>
+</html>

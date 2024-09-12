@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .question {
+            margin: 10px 0;
+        }
+        button {
+            margin-top: 20px;
+        }
+        .timer {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<h1>JavaScript Test 100 ta</h1>
+
+<div id="quiz">
+    <!-- Savollar joylanadi -->
+</div>
+
+<div id="timer" class="timer">20 soniya qoldi!</div>
+<div>
+    <button id="submit">Natijani ko'rsatish</button>
+</div>
+<div id="result"></div>
+
+<script>
+const quizQuestions = [
+{
+        question: "JavaScriptda qanday ma'lumot turlari mavjud?",
+        options: ["integer, float", "string, number, boolean, object, null, undefined, symbol", "char, byte", "list, set"],
+        answer: 1
+    },
+    {
+        question: "`typeof 42` qaytaradigan natija nima?",
+        options: ["string", "number", "float", "undefined"],
+        answer: 1
+    },
+    {
+        question: "Quyidagi ifoda qaysi turdagi qiymatni ifodalaydi: `let value = null;`?",
+        options: ["undefined", "object", "number", "string"],
+        answer: 1
+    },
+    {
+        question: "`typeof []` qanday natija beradi?",
+        options: ["array", "object", "list", "undefined"],
+        answer: 1
+    },
+    {
+        question: "JavaScriptda qaysi qiymat \"falsy\" hisoblanadi?",
+        options: ["true", "1", "\"\"", "\"hello\""],
+        answer: 2
+    },
+    {
+        question: "`NaN` nimani anglatadi?",
+        options: ["Negative Number", "Not a Number", "Null as Number", "Normal Average Number"],
+        answer: 1
+    },
+    {
+        question: "`console.log(typeof Symbol())` natijasi nimani ko'rsatadi?",
+        options: ["string", "symbol", "object", "undefined"],
+        answer: 1
+    },
+    {
+        question: "JavaScriptda bo'sh qiymat qanday ifodalanadi?",
+        options: ["null", "undefined", "0", "''"],
+        answer: 0
+    },
+    {
+        question: "Quyidagi ifoda `true == \"1\"` natijasini nima?",
+        options: ["true", "false", "undefined", "null"],
+        answer: 0
+    },
+    {
+        question: "`===` operatori qanday farq qiladi?",
+        options: ["Faqat qiymatlarni taqqoslaydi", "Tur va qiymatni taqqoslaydi", "Berilgan qiymatlarni teng davom ettiradi", "Jami qiymatlarni o'z ichiga oladi"],
+        answer: 1
+    },
+    {
+        question: "`console.log(null == undefined)` natijasi nima?",
+        options: ["true", "false", "null", "undefined"],
+        answer: 0
+    },
+    {
+        question: "`let x; console.log(typeof x);` natijasi qanday bo'ladi?",
+        options: ["\"undefined\"", "\"null\"", "\"number\"", "\"object\""],
+        answer: 0
+    },
+    {
+        question: "`let y = [1, 2, 3]; console.log(typeof y)` natijasi nima?",
+        options: ["\"array\"", "\"object\"", "\"list\"", "\"number\""],
+        answer: 1
+    },
+    {
+        question: "Quyidagi kodda qaysi qiymat olinadi: `console.log(1 + \"2\");`?",
+        options: ["3", "\"12\"", "\"3\"", "NaN"],
+        answer: 1
+    },
+    {
+        question: "`console.log(\"5\" - 2)` natijasi qanday bo'ladi?",
+        options: ["\"3\"", "3", "\"5\"", "NaN"],
+        answer: 1
+    },
+    {
+        question: "JavaScriptda massivlar qanday aniqlanadi?",
+        options: ["[]", "{}", "()", "<>"],
+        answer: 0
+    },
+    {
+        question: "JavaScriptda funksiya qanday aniqlanadi?",
+        options: ["let functionName() {}", "function functionName() {}", "functionName() {}", "func functionName() {}"],
+        answer: 1
+    },
+    {
+        question: "`console.log(\"hello\" === \"hello\")` natijasi qanday?",
+        options: ["true", "false", "null", "undefined"],
+        answer: 0
+    },
+    {
+        question: "Quyidagi kodni ko'rsating: `let num = 10; num++; console.log(num);` natijasi nima?",
+        options: ["9", "10", "11", "undefined"],
+        answer: 2
+    },
+    {
+        question: "`let obj = { prop: 1 }; console.log(typeof obj);` natijasi qanday?",
+        options: ["\"object\"", "\"object: object\"", "\"prop\"", "\"array\""],
+        answer: 0
+    },
+    {
+        question: "Quyidagi kodda `console.log(0 == false)` natijasi qanday?",
+        options: ["true", "false", "undefined", "0"],
+        answer: 0
+    },
+    {
+        question: "Funktsiyani qanday e'lon qilish mumkin?",
+        options: ["function myFunc() {}", "let myFunc = function() {}", "All of the above", "function = myFunc() {}"],
+        answer: 2
+    },
+    {
+        question: "Quyidagi kodning natijasi qanday bo'ladi: `console.log(5 === \"5\");`?",
+        options: ["true", "false", "null", "undefined"],
+        answer: 1
+    },
+    {
+        question: "`for (let i = 0; i < 5; i++) { console.log(i); }` natijasi qanday?",
+        options: ["0 1 2 3 4", "0 1 2 3 4 5", "1 2 3 4 5", "1 2 3 4"],
+        answer: 0
+    },
+    {
+        question: "Quyidagi ifoda xatolik beradi: `let a = {}; console.log(a.name);`?",
+        options: ["true", "false", "TypeError", "Uxat ga qaramay,"],
+        answer: 1
+    },
+    {
+        question: "Quyidagi `undefined` qiymat qachon olinadi?",
+        options: ["O'zgaruvchi e'lon qilinmaganida", "O'zgaruvchini qiymati o'rnatilmaganida", "O'zgaruvchini qiymati null bo'lganda", "All of the above"],
+        answer: 3
+    },
+    {
+        question: "Quyidagi kodning natijasi qanday: `console.log(true + true);`?",
+        options: ["true", "false", "2", "1"],
+        answer: 2
+    },
+    {
+        question: "JavaScriptda null ma'lumot turi qanday turga kiradi?",
+        options: ["Primitive type", "Object type", "Function", "Undefined type"],
+        answer: 0
+    },
+    {
+        question: "`let arr = [1, 2, 3]; arr[5] = 5; console.log(arr.length);` natijasi qanday?",
+        options: ["3", "4", "5", "6"],
+        answer: 3
+    },
+    {
+        question: "`Boolean(\"false\")` natijasi qanday?",
+        options: ["true", "false", "NaN", "undefined"],
+        answer: 0
+    },
+    {
+        question: "Quyidagi kodda `let a = 1; a = \"test\"; console.log(a);` qanday natija beradi?",
+        options: ["1", "test", "undefined", "TypeError"],
+        answer: 1
+    },
+    {
+        question: "JavaScriptda \"use strict\" nima?",
+        options: ["O'zgaruvchilarga ehtiyotkorlik bilan yondashish", "Global o'zgaruvchilarni cheklash", "Ayrim xatolarni avvaldan aniqlash", "Faqat yangi versiyalarda ishlatish"],
+        answer: 2
+    },
+    {
+        question: "`let user = { name: \"Alice\" }; console.log(user.age);` natijasi nima?",
+        options: ["\"Alice\"", "undefined", "null", "Error"],
+        answer: 1
+    },
+    {
+        question: "`console.log((10 + 20) + \"30\");` natijasi nima?",
+        options: ["40", "\"30\"", "\"3030\"", "\"330\""],
+        answer: 3
+    },
+    {
+        question: "Masalaning qaysi biri JavaScriptda object sifatida aniqlanadi?",
+        options: ["{ key: value }", "[ key: value ]", "( key: value )", "< key: value >"],
+        answer: 0
+    },
+    {
+        question: "Quyidagi ifoda `console.log(5 + \"5\")` natijasi nima?",
+        options: ["10", "\"55\"", "\"10\"", "5"],
+        answer: 1
+    },
+    {
+        question: "`let z = 5; z = z + \"5\";` natijasi qanday?",
+        options: ["10", "55", "5", "NaN"],
+        answer: 1
+    },
+    {
+        question: "JavaScriptda o'zgaruvchiga qanday qiymat berilganda boolean false bo'ladi?",
+        options: ["1", "0", "\"hello\"", "null"],
+        answer: 1
+    },
+    {
+        question: "`const x = 10; x++; console.log(x);` natijasi nima?",
+        options: ["10", "11", "TypeError", "NaN"],
+        answer: 2
+    },
+    {
+        question: "`Boolean(0)` natijasi nima?",
+        options: ["true", "false", "NaN", "undefined"],
+        answer: 1
+    },
+    {
+        question: "Quyidagi kodda `let a = [1, 2, 3]; console.log(a.length);` natijasi qanday?",
+        options: ["2", "3", "0", "undefined"],
+        answer: 1
+    },
+    {
+        question: "`console.log({} == {})` natijasi qanday bo'ladi?",
+        options: ["true", "false", "null", "undefined"],
+        answer: 1
+    },
+    {
+        question: "`console.log(5 + 6 + \"7\");` natijasi nima?",
+        options: ["18", "\"18\"", "\"57\"", "57"],
+        answer: 2
+    },
+    {
+        question: "`let x = 2; let y = \"2\"; console.log(x == y);` natijasi nima?",
+        options: ["true", "false", "undefined", "NaN"],
+        answer: 0
+    },
+    {
+        question: "`let x; console.log(typeof x);` natijasi qanday bo'ladi?",
+        options: ["\"undefined\"", "\"null\"", "\"object\"", "\"number\""],
+        answer: 0
+    },
+    {
+        question: "`let arr = [1, 2, 3, 4]; console.log(arr[2]);` natijasi nima?",
+        options: ["2", "3", "4", "0"],
+        answer: 1
+    },
+    {
+        question: "`typeof null` javobi nima?",
+        options: ["\"object\"", "\"null\"", "\"undefined\"", "\"number\""],
+        answer: 0
+    },
+    {
+        question: "Quyidagi ifoda qanday natija beradi: `console.log(false + true);`?",
+        options: ["false", "true", "1", "0"],
+        answer: 2
+    },
+    {
+        question: "`let str = \"Hello\"; console.log(str.length);` natijasi qanday?",
+        options: ["5", "10", "0", "undefined"],
+        answer: 0
+    },
+    {
+        question: "`console.log(5 * \"5\")` natijasi nima?",
+        options: ["10", "25", "\"25\"", "NaN"],
+        answer: 1
+    },
+    {
+        question: "`let x = 10; x = x + \"10\"; console.log(x);` natijasi qanday?",
+        options: ["20", "\"1010\"", "\"20\"", "NaN"],
+        answer: 1
+    },
+    {
+        question: "`console.log(3 > 2 > 1)` natijasi qanday bo'ladi?",
+        options: ["true", "false", "NaN", "TypeError"],
+        answer: 1
+    },
+    {
+        question: "JavaScriptda qaysi operatorlar o'zgaruvchining qiymatini bartaraf etadi?",
+        options: ["++", "--", "All of the above", "--"],
+        answer: 2
+    },
+    {
+        question: "`console.log([] == false)` natijasi nima?",
+        options: ["true", "false", "undefined", "NaN"],
+        answer: 0
+    },
+    {
+        question: "`let string = \"Hello\"; console.log(string[0]);` natijasi nimani ko'rsatadi?",
+        options: ["\"Hello\"", "\"H\"", "0", "undefined"],
+        answer: 1
+    },
+    {
+        question: "`console.log(Math.abs(-5));` natijasi nima?",
+        options: ["-5", "5", "NaN", "Undefined"],
+        answer: 1
+    },
+    {
+        question: "`let x = \"Hello\"; x[0] = \"h\"; console.log(x);` natijasi qanday?",
+        options: ["\"Hello\"", "\"hello\"", "\"hEllo\"", "\"undefined\""],
+        answer: 0
+    },
+    {
+        question: "Quyidagi ifoda `console.log(\"5\" + 5);` qanday natija beradi?",
+        options: ["10", "\"55\"", "\"10\"", "NaN"],
+        answer: 1
+    },
+    {
+        question: "`let arr = \"Hello\"; console.log(arr.length);` natijasi qanday?",
+        options: ["5", "10", "undefined", "NaN"],
+        answer: 0
+    },
+    {
+        question: "JavaScriptda `function` qanday kirish qilinadi?",
+        options: ["let functionName = () => {}; ", "const functionName = () => {};", "All of the above", "function functionName() {}"],
+        answer: 2
+    },
+    {
+        question: "`let result = (1 + 2)[\"toString\"]();` natijasi nima?",
+        options: ["\"3\"", "3", "undefined", "\"undefined\""],
+        answer: 0
+    },
+    {
+        question: "Quyidagi ifoda `console.log(5 + \"5\" - 2);` natijasi nima?",
+        options: ["3", "\"55\"", "\"55\" - 2", "53"],
+        answer: 3
+    },
+    {
+        question: "`null + 1` natijasi qanday?",
+        options: ["null", "1", "undefined", "TypeError"],
+        answer: 1
+    },
+    {
+        question: "Quyidagi kodda `let arr = [1, 2, 3]; arr.push(4); console.log(arr.length);` natijasi qanday?",
+        options: ["3", "4", "5", "NaN"],
+        answer: 1
+    },
+    {
+        question: "`let string = \"Hello World\"; console.log(string.indexOf(\" \"));` natijasi nima?",
+        options: ["5", "6", "10", "-1"],
+        answer: 0
+    },
+    {
+        question: "JavaScriptda o'zgaruvchilar qanday e'lon qilinadi?",
+        options: ["let, var, const", "declare, assign", "create, define", "type, variable"],
+        answer: 0
+    },
+    {
+        question: "Yuqorida berilgan birinchi bog'langan ifoda orqali \"hello\" qaysi turga kiradi: `let str = \"hello\";`?",
+        options: ["string", "object", "integer", "float"],
+        answer: 0
+    },
+    {
+        question: "Quyidagi kodda `console.log(5 == \"5\");` qanday natija beradi?",
+        options: ["true", "false", "undefined", "NaN"],
+        answer: 0
+    },
+    {
+        question: "`[1, 2] == [1, 2]` natijasi qanday bo'ladi?",
+        options: ["true", "false", "undefined", "NaN"],
+        answer: 1
+    },
+    {
+        question: "`let user = { name: \"John\", age: 30 }; console.log(user[\"name\"]);` natijasi nima?",
+        options: ["\"John\"", "30", "undefined", "null"],
+        answer: 0
+    },
+    {
+        question: "Quyidagi kod nima chiqaradi: `console.log(\"2\" + 2 - 2);`?",
+        options: ["\"22\"", "\"2\"", "22", "NaN"],
+        answer: 0
+    },
+    {
+        question: "`5 * null` natijasi qanday bo'ladi?",
+        options: ["null", "5", "0", "NaN"],
+        answer: 2
+    },
+    {
+        question: "Quyidagi kodda `let age = \"30\" + 20; console.log(age);` natijasi qanday?",
+        options: ["50", "\"3020\"", "20", "null"],
+        answer: 1
+    },
+    {
+        question: "\"Hello\".toLowerCase() natijasi nima?",
+        options: ["\"Hello\"", "\"hello\"", "\"HELLO\"", "undefined"],
+        answer: 1
+    },
+    {
+        question: "Quyidagi kodda `let num = 12; console.log(num % 5);` natijasi qanday?",
+        options: ["2", "12", "7", "0"],
+        answer: 0
+    },
+    {
+        question: "`let x = 2; x *= 3; console.log(x);` natijasi qanday?",
+        options: ["3", "6", "5", "0"],
+        answer: 1
+    },
+    {
+        question: "`let str = \"Hello\"; console.log(str[str.length - 1]);` natijasi nima?",
+        options: ["\"H\"", "\"o\"", "\"Hello\"", "\"E\""],
+        answer: 1
+    },
+    {
+        question: "Qaysi ifoda to'g'ri: `console.log(1 < 2 > 0);`?",
+        options: ["true", "false", "NaN", "undefined"],
+        answer: 0
+    },
+    {
+        question: "`let array = [1, 2, 3]; array.push(4); console.log(array);` natijasi qanday?",
+        options: ["[1, 2, 3, 4]", "[1, 2]", "[4]", "4"],
+        answer: 0
+    },
+    {
+        question: "JavaScriptning `Math` obyekti nimalarni ifodalaydi?",
+        options: ["Matematik operatsiyalar", "Faqat o'lchovlar", "Vaqtni hisoblash", "Umumiy hisob-kitoblarni"],
+        answer: 0
+    },
+    {
+        question: "\"Hello\".charAt(0) natijasi nima?",
+        options: ["\"H\"", "\"E\"", "\"Hello\"", "0"],
+        answer: 0
+    },
+    {
+        question: "JavaScriptda `setTimeout` funksiyasi qanday ishlaydi?",
+        options: ["Aniq vaqtdan so'ng bajarish", "Asinxron funksiyalarni bajarish", "Timing ob'ektini olish", "Umumiy vaqtni hisoblash"],
+        answer: 0
+    },
+    {
+        question: "`console.log(NaN === NaN)` natijasi nima?",
+        options: ["true", "false", "null", "undefined"],
+        answer: 1
+    },
+    {
+        question: "`let x = 1; x++; console.log(x);` natijasi qanday?",
+        options: ["2", "1", "undefined", "NaN"],
+        answer: 0
+    },
+    {
+        question: "`(3 < 2) + (2 < 1)` natijasi qanday?",
+        options: ["true", "false", "0", "NaN"],
+        answer: 2
+    },
+    {
+        question: "`let y = 0; console.log(typeof y);` natijasi qanday?",
+        options: ["\"number\"", "\"string\"", "\"undefined\"", "\"object\""],
+        answer: 0
+    },
+    {
+        question: "`let obj = { a: 1 }; console.log(obj.a);` natijasi qanday?",
+        options: ["undefined", "1", "null", "TypeError"],
+        answer: 1
+    },
+    {
+        question: "`console.log(+'10');` natijasi nima?",
+        options: ["\"10\"", "10", "NaN", "0"],
+        answer: 1
+    },
+    {
+        question: "`let x = { a: 1 }; let y = x; y.a = 2; console.log(x.a);` natijasi qanday?",
+        options: ["1", "2", "null", "undefined"],
+        answer: 1
+    },
+    {
+        question: "`let arr = [1, 2, 3]; console.log(arr[3]);` natijasi nima?",
+        options: ["3", "undefined", "0", "NaN"],
+        answer: 1
+    },
+    {
+        question: "`let a; console.log(a);` natijasi nima?",
+        options: ["null", "undefined", "TypeError", "0"],
+        answer: 1
+    },
+    {
+        question: "JavaScriptda `json` qanday maqsadga xizmat qiladi?",
+        options: ["Faqat raqamli ma'lumotlar", "Matnli ma'lumotlar", "Ma'lumotlarni saqlash va uzatish", "O'zgaruvchi turlarini belgilash"],
+        answer: 2
+    },
+    {
+        question: "`Math.random()` natijasi qanday?",
+        options: ["0 dan 1 gacha bo'lgan raqam", "1 dan 10 gacha bo'lgan raqam", "0 dan 10 gacha bo'lgan raqam", "NaN"],
+        answer: 0
+    },
+    {
+        question: "`let x = \"test\"; console.log(x);` natijasi qanday?",
+        options: ["\"test\"", "test", "undefined", "null"],
+        answer: 0
+    },
+    {
+        question: "`string.includes(\"el\")` qanday natija beradi?",
+        options: ["true", "false", "NaN", "undefined"],
+        answer: 0
+    },
+    {
+        question: "`let x = [1, 2]; x.push(3); console.log(x);` natijasi qanday?",
+        options: ["[1, 2]", "[1, 2, 3]", "[3]", "TypeError"],
+        answer: 1
+    },
+    {
+        question: "`let y; console.log(y == null);` natijasi nima?",
+        options: ["true", "false", "undefined", "NaN"],
+        answer: 0
+    },
+    {
+        question: "`console.log([1] == [1])` natijasi qanday?",
+        options: ["true", "false", "undefined", "NaN"],
+        answer: 1
+    },
+    {
+        question: "`let a = (1, 2, 3); console.log(a);` natijasi nima?",
+        options: ["1", "2", "3", "NaN"],
+        answer: 2
+    },
+    {
+        question: "`console.log(!!\"\")` natijasi qanday?",
+        options: ["true", "false", "null", "NaN"],
+        answer: 1
+    }
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+let timer;
+const timeLimit = 20;
+const wrongAnswers = []; // Xato berilgan savollar uchun ro'yxat
+
+function loadQuiz() {
+    const quizContainer = document.getElementById('quiz');
+    const timerElem = document.getElementById('timer');
+    quizContainer.innerHTML = '';
+    timerElem.innerHTML = `20 soniya qoldi!`;
+
+    const q = quizQuestions[currentQuestionIndex];
+
+    const questionElem = document.createElement('div');
+    questionElem.classList.add('question');
+    questionElem.innerHTML = `<p>${currentQuestionIndex + 1}. ${q.question}</p>`;
+
+    q.options.forEach((option, i) => {
+        questionElem.innerHTML += `
+            <label>
+                <input type="radio" name="question${currentQuestionIndex}" value="${i}" onchange="checkAnswer(this)"> ${option}
+            </label><br>
+        `;
+    });
+
+    quizContainer.appendChild(questionElem);
+
+    startTimer();
+}
+
+function startTimer() {
+    let timeRemaining = timeLimit;
+    const timerElem = document.getElementById('timer');
+
+    timer = setInterval(() => {
+        timeRemaining--;
+        timerElem.innerHTML = `${timeRemaining} soniya qoldi!`;
+
+        if (timeRemaining <= 0) {
+            clearInterval(timer);
+            moveToNextQuestion();  // Vaqt tugaganida keyingi savolga o'tish
+        }
+    }, 1000);
+}
+
+function checkAnswer(selectedOption) {
+    clearInterval(timer); // Timerni to'xtatish
+    const q = quizQuestions[currentQuestionIndex];
+
+    // Javobni tekshirish
+    if (parseInt(selectedOption.value) === q.answer) {
+        score++;
+    } else {
+        wrongAnswers.push(currentQuestionIndex); // Xato javob berilgan savol indeksini saqlash
+    }
+
+    moveToNextQuestion(); // Keyingi savolga o'ting
+}
+
+function moveToNextQuestion() {
+    if (currentQuestionIndex < quizQuestions.length - 1) {
+        currentQuestionIndex++;
+        loadQuiz();  // Yangi savolni yuklash
+    } else {
+        showResults(); // Savollar tugadi, natijalarni ko'rsatish
+    }
+}
+
+function showResults() {
+    clearInterval(timer);
+    const resultElem = document.getElementById('result');
+    let resultHTML = `<h2>Natijalar</h2><p>Siz ${score} ta savolga to'g'ri javob berdingiz!</p>`;
+
+    if (wrongAnswers.length > 0) {
+        resultHTML += "<h3>Xato berilgan savollar:</h3>";
+        wrongAnswers.forEach(index => {
+            const question = quizQuestions[index];
+            resultHTML += `<p>${index + 1}. ${question.question} <br> To'g'ri javob: ${question.options[question.answer]}</p>`;
+        });
+    }
+
+    resultElem.innerHTML = resultHTML;
+}
+
+document.getElementById('submit').addEventListener('click', showResults);
+
+loadQuiz();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neat js Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .question {
+            margin: 10px 0;
+        }
+        button {
+            margin-top: 20px;
+        }
+        .timer {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Next js Test 106 ta</h1>
+
+<div id="quiz">
+    <!-- Savollar joylanadi -->
+</div>
+
+<div id="timer" class="timer">20 soniya qoldi!</div>
+<div>
+    <button id="submit">Natijani ko'rsatish</button>
+</div>
+<div id="result"></div>
+
+<script>
+const quizQuestions = [
+    {
+        "question": "Next.js nima?",
+        "options": ["React framework", "JavaScript library", "CSS framework", "JavaScript engine"],
+        "answer": 0
+    },
+    {
+        "question": "Next.jsda sahnalarni qanday yaratamiz?",
+        "options": ["/pages direktoriyasida", "/components direktoriyasida", "/src direktoriyasida", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.jsda ma'lumotlarni qanday olish mumkin?",
+        "options": ["getStaticProps", "getServerProps", "fetch", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Dynamic routing qanday amalga oshiriladi?",
+        "options": ["[param].js faylini yaratish orqali", "param.js", "dynamic.js", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.jsda static sahifalarni yaratish uchun qanday xususiyatdan foydalanamiz?",
+        "options": ["getStaticProps", "getServerSideProps", "useEffect", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.jsda API yo'llarini qanday yaratamiz?",
+        "options": ["/pages/api/... direktoriyasida", "/api direktoriyasida", "/api/routes direktoriyasida", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.jsda sahna yo'q bo'lsa, qaysi xususiyat ishlatiladi?",
+        "options": ["fallback", "default", "static", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.jsda sahna tashqi API dan ma'lumot olishda qaysi xususiyat ishlatiladi?",
+        "options": ["getServerSideProps", "getStaticProps", "useSWR", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js tomonidan keltirilgan ichki marshrutlar qanday ishlaydi?",
+        "options": ["next/link", "router.push", "useRouter", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Next.jsda sahnani boshlash uchun buyruq qaysi?",
+        "options": ["npm run dev", "npm start", "yarn start", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.jsda sahnaga qaramay shakllanish qanday ko'rinadi?",
+        "options": ["getStaticPaths", "getPath", "staticPaths", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js da CSS modulidan qanday foydalanamiz?",
+        "options": [".module.css", "module.css", "style.css", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.jsda sahna bitta API chaqirishi ishga tushganda qaysi holni oldini oladi?",
+        "options": ["getServerSideProps", "getStaticProps", "useEffect", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Qanday qilib Next.js-da rasmlarni optimallashtirishimiz mumkin?",
+        "options": ["<Image /> komponenti", "<img /> elementi", "<Picture /> elementi", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnani keshlash uchun qaysi usul ishlatiladi?",
+        "options": ["SSG", "SSR", "CSR", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Next.js-da sahnalarni o'z ichiga olgan serverli sahnalar qanday ishlaydi?",
+        "options": ["getServerSideProps", "dynamic import", "load balancing", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.jsda sahnani qanchalik tez yuklashini qanday optimallashtirish mumkin?",
+        "options": ["Prefetching", "Caching", "Compression", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Next.js da sahnalarni funksional komponent sifatida qanday yozamiz?",
+        "options": ["function MyComponent() {}", "const MyComponent = () => {}", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Next.js-da dinamik import qanday qo'llaniladi?",
+        "options": ["next/dynamic", "dynamic/import", "import/dynamic", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalar uchun to'g'ridan-to'g'ri ma'lumot oqimi qanday amalga oshiriladi?",
+        "options": ["getServerSideProps", "getStaticProps", "getInitialProps", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalar o'zgartirilganda ma'lumotni avtomatik yangilash qanday ishlaydi?",
+        "options": ["useSWR", "react-query", "axios", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da ma'lumotlarni olish uchun qaysi komponentlar ishlatiladi?",
+        "options": ["Data Fetching API", "Data Mapping API", "Data Handling API", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalarni qanday qilib birlashtiramiz?",
+        "options": ["getInitialProps", "getStaticProps", "context parametrlari", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalar bo'sh sahna berdi va buni qanday qilish kerak?",
+        "options": ["fallback: true", "fallback: false", "fallback: possible", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Qanday qilib Next.js-da sahna darajasida maxsus sotib olingan CSS qilishimiz mumkin?",
+        "options": ["import '../style.css'", "require('../style.css')", "load style.css", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da API chaqiruvlarining asosi qaysi?",
+        "options": ["getServerSideProps", "API routes", "Static Generation", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Next.js-da static sahnalarni qanday yaratamiz?",
+        "options": ["export default MyPage", "export async function getStaticProps()", "getStaticProps()", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Next.js-da sahnalarni qisqa ko'rinishda birlashtirish qanday bo'ladi?",
+        "options": ["import { useRouter } from 'next/router'", "useRouter()", "useRoutering()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da global CSS fayi qanday ko'rinishda faollashtiriladi?",
+        "options": ["_app.js faylida import qilish", "_app.css faylida import qilish", "app.css faylida import qilish", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalarni 404 xato sahifasiga qanday yo'naltiramiz?",
+        "options": ["404.js filiga", "404.html filiga", "error.js filiga", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sidebar qanday yaratiladi?",
+        "options": ["map orqali", "link orqali", "button orqali", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnani qaysi usulda SEO uchun moslashtirishimiz mumkin?",
+        "options": ["next/head", "react/helmet", "next-seo", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js sahnasi ishi va sahifalar ishi orasidagi farq nima?",
+        "options": ["Sahna ishlari mavjud saka-yoki qilmasligi kerak", "Sahna ishlari serverda ko'rinishi kerak", "Barcha sahnalar sahifalar bilan ishlaydi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Next.js-da sahifani qanday ochishimiz mumkin?",
+        "options": ["npx create-next-app", "npm init next", "yarn next-app", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnani qanday tez yuklashimiz mumkin?",
+        "options": ["Prefetching", "Caching", "Optimizing", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da server tomoni rendering (SSR) qaysi metod bilan amalga oshiriladi?",
+        "options": ["getServerSideProps()", "getStaticProps()", "getInitialProps()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da client tomoni rendering (CSR) qaysi metod bilan amalga oshiriladi?",
+        "options": ["useEffect()", "getStaticProps()", "getServerSideProps()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnada neçə bitta API chaqirishi mumkin?",
+        "options": ["1 ta API chaqirishi", "Xohlagancha API chaqirishi", "Faoliyatni tezlashtirishi mumkin emas", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Next.js-da harakatlarning qaysi turlari mavjud?",
+        "options": ["Link va Push", "Router va Replace", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Next.js-da sahnaga maxsus ma'lumotlarni qanday beramiz?",
+        "options": ["json.json", "getStaticProps()", "getInitialProps()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da statik sahnalarni qanday yuklaymiz?",
+        "options": ["getStaticProps", "getServerSideProps", "staticProps", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahna importini qanday qo'llashda qanday atributdan foydalanamiz?",
+        "options": ["dynamic", "import", "async", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da qaysi xususiyatlar yordamida sahnalarni boshqaramiz?",
+        "options": ["Router", "Link", "useRouter", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Next.js-da qaysi sahnani ko'taruvchi maxsus usul tezroq qo'shiladi?",
+        "options": ["static", "server", "client", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahna xatolarini qanday ko'rganimiz mumkin?",
+        "options": ["API bilim ortiqcha xatolar tasdiqlanadi", "Serverdan javoblar alsin", "xatolarni qayd etish", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da masofali xatolarni qanday ko'raymiz?",
+        "options": ["404.js faylida", "xato sahifasi"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da global state qanday boshqariladi?",
+        "options": ["Redux yordamida", "Context API yordamida", "MobX yordamida", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Next.js-da sahnada sass va scss bilan ishlashni qanday amalga oshiramiz?",
+        "options": ["Sass konfiguratsiyasini qo'shib", "SCSS fayllari orqali", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Next.js-da sahna ustida o'zgarishlar qanday chiqariladi?",
+        "options": ["refresh orqali", "revalidate orqali", "update orqali", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Next.js-da CSSni qanday crashtirovka qilish bilan ishlaymiz?",
+        "options": ["CSS-in-JS", "styled-components", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Next.js-da sahnalarda image qanday optimallashtiriladi?",
+        "options": ["<Image /> komponenti orqali", "<img /> orqali", "<Picture /> orqali", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahna uchun SEO qanday ko'rsatadi?",
+        "options": ["next/head", "React Helmet", "SEO meta", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da token bilan autentifikatsiya qanday amalga oshiriladi?",
+        "options": ["cookie orqali", "localStorage orqali", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Next.js-da sahnani avtomatik yangilash qanday amalga oshiriladi?",
+        "options": ["SWR orqali", "useEffect orqali", "getStaticProps orqali", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahna funksiyalari qaysi formatda bo'ladi?",
+        "options": ["ES6 modulida", "CommonJS modulida", "Barchasi", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnada matnni o'zgaruvchilar orqali qanday ko'rsatamiz?",
+        "options": ["Interpolation yordamida", "Plain text orqali", "String format orqali", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalarni ko'p rekursiyali yuklashda qanday maxsus muammo chiqadi?",
+        "options": ["ko'pligi xatolik", "sahnalar yuklanadi", "xatolarni nuqtalash", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js sahnalari nima orqali optimallashtiriladi?",
+        "options": ["Prefetching, Caching, SEO", "Prefetching, SSR, SEO", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Next.js-da qanday qilib qiymatlarni optimallashtiramiz?",
+        "options": ["HTML va CSS yordamida", "JavaScript va CSS yordamida", "JavaScript yordami xususan", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Next.js-da sahnalarni ajax orqali qanday jo'natamiz?",
+        "options": ["fetch() orqali", "axios() orqali", "XHR orqali", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalarni birma-bir yuklab olish bo'yicha qaysi metod ishlatiladi?",
+        "options": ["SSR", "SSG", "CSR", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalarga parametrlarga dinamik qiymat haqida ma'lumot olishda qaysi xizmatdan foydalanamiz?",
+        "options": ["getInitialProps()", "useParams()", "context.params", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalarda client tarafindan bir yo'nalishda kirishni qanday qabul qilamiz?",
+        "options": ["Link elementidan", "useRouter yordamida", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Next.js-da sahnalarni boshqarish uchun muammolarni qanday hal qilamiz?",
+        "options": ["Problem çözüm metodları", "Xato nazorati", "SORU/VG/REDUX yordamida", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Next.js-da sahnani yuklash yechimlari uchun qanday kod yozishingiz mumkin?",
+        "options": ["useEffect", "axios", "async/await", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Next.js-da sahnani qanday qilib to'ldiramiz?",
+        "options": ["JSON fayli orqali", "JavaScript orqali", "HTML orqali", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Next.js-da vidyolarni optimallashtirish uchun qaysi komponent kerak?",
+        "options": ["HTML5 Video", "Video.js", "video-optimizing", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da xatoliklar yozilsin uchun qaysi komponent kerak?",
+        "options": ["Custom_error_handling", "Custom_tailwind", "useError", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalarni yaratishda qaysi asboblar tavsiya etiladi?",
+        "options": ["React Admin", "Gatsby", "GraphQL", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalarda ma'lumot hokimiyatini beruvchi qaysi metod ishlatiladi?",
+        "options": ["Context API", "useEffect", "useReducer", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalarni yaratishda qaysi asosiy kutubxonalar kerak?",
+        "options": ["React", "Express", "Redux", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Next.js-da routing taqsimotlari ulnashtirish uchun qaysi asosiy komponent ishlatiladi?",
+        "options": ["Link", "Router", "Page", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Next.js-da sahnalarda uslub uchun qanday optimallashtirishgacha zarur?",
+        "options": ["Module CSS", "Pure CSS", "External CSS", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da ma'lumot olinishin sahnalari qaysidan keladi?",
+        "options": ["API orqali", "API lehkin ishlash", "Redux sahvari orqali", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da qaysi mehmonlar uchun sahnani yaratamiz?",
+        "options": ["Guest", "RANDI", "Vhod", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalarda ishlayotgan mobil versiyani qanday qolga olishimiz mumkin?",
+        "options": ["Mobile@next", "Responssive@next", "Mobile with Next.js", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalarni yaratish jarayonida qaysi ma'lumotlar ochiladi?",
+        "options": ["props", "state", "context", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalarda connect iorining ishlash usuli?",
+        "options": ["Connecting page", "Routing to page", "Server communication", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnani tabiiy ko'rinishlisi uchun qaysi qiyinliklar hamqorlar?",
+        "options": ["Tabii CSS", "Tabii JS", "Sasha yordamida", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalarda kelgusida serversoznisini boshqarish uchun qaysi xilori taqdim etiladi?",
+        "options": ["API", "LOW", "Cit", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalarda ko'rsatilishi uchun qaysi dars xarakati aniqlanadi?",
+        "options": ["Animated page", "Structured page", "Customized page", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalardagi xatolarni qanday tuzating?",
+        "options": ["GET method orqali", "send method orqali", "SEND or GET qilingan sahna", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnani kuzinggacha ushlab turish nima demak?",
+        "options": ["Tinchlik jarayonini", "Silent aqili", "Zarb haqidagi jarayon", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalarni faol holatda qanday ko'rsatamiz?",
+        "options": ["Virtual stage", "Alert stage", "inifinite stage", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalarni qayd etish uchun qaysi fiyaksda ishlaymiz?",
+        "options": ["Custom key under", "Default key", "O'z maqola nasli kecholgan", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js sahnaning dastlabki qismi qaysi turda turadi?",
+        "options": ["SEO joriy qilingan", "Client side", "Code statik huquq", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalarni ishi haqida xatoliklar to'g'risida qayd qilinadi?",
+        "options": ["Sahni, saytida bir xatolik", "Sahnadagi bir kerradagi xatoliklar to'g'risida", "Barcha turdagi xatoliklar sahnasi haqida", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da dinamik sahnalar qanday ishlashi mumkin?",
+        "options": ["Client tarafidan", "Server tomonidan", "Database orqali", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da xatolikka qulaylik ma'nolarni qanday yaratamiz?",
+        "options": ["Serverdan joy olish", "Raqamni komunitasiyalash", "Привлечение наһарокни суппор солҳои энг муваффақ",
+        "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalar tugatgan kaftlarda qaysi guruhda tuziladi?",
+        "options": ["Tuqqan sahnalar", "Т-симпо северный", "Т-симпо юлвяк", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnada pig‘o'ning kirmasi qanday ko'rinadi?",
+        "options": ["Sahna ma'nosiito qondirish", "allo", "O'z maqolasi", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalar qidirish va fanlar karta bilan qanday osongina ko'rinadi?",
+        "options": ["Routing kartasi", "Sahnani jumla kartasida skor", "Çeşitler", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahna tuzish jarayonida ma'lum otkirliyin saqlanmagan add atuzi kerakmi?",
+        "options": ["Imkon", "Dasturning qanchaligi", "maxsus otkinasiquen", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalar jarayoni ko'paytirilishi mumkinmi?",
+        "options": ["Bo'lamagan sahna", "Sahnada o'rin olmaslik", "Barcha turdagi sahnalar umuman ko'paytirilishi mumkin", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Next.js-da sahnalar orasidagi aloqa qanday muomala o'rnatilgan?",
+        "options": ["Kirish sahnasidan o'rnatilgan", "Tugamish qachon", "Shartli xatolik", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnaga saytga yo'nalish qanday sahnada tuzib qo'yiladi?",
+        "options": ["Raqamni kudan", "Salom oqshom", "O'rnatilgan bog'da sezgimning aniq ta'rif umuman", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Next.js-da sahnalar endi saqlanadi?",
+        "options": ["Anchor", "URL bog'i", "jarayonda o'zgarish imkoniyat", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalar qaysi kutilmali vazifalar mavjud?",
+        "options": ["Kirish sahnasidan", "Kirish muammosi", "Barcha muammolar o'ziga ko'ra", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Next.js-da sahnaga kirish navbatdagi tezlikni qanday bilish mumkin?",
+        "options": ["Statistika schyotique", "Statik rollarni yuklash uchun", "Statistik hesoblardan bir chorak", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js-da sahnalar haqida ma'lumotning samaradorligi qanday ilgari sahnani ko'rinrada ekan?",
+        "options": ["Tariff raqamni yuklab", "Tariff sahna rejasiga xilof bo'lish", "Barcha sahnalarda", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js sahnalarida ishlaydigan ma'lumotlar qaysi",
+        "options": ["Dynamic", "Static", "Open", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js sahnalarida sahnalarni taqsimlash with prefixlar yig'lannyomaji kabi bo'ladi",
+        "options": ["bosh sahna", "default", "mainComponent", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js sahnasi bilan bog'langan jarayonni yuriydigan avvalgi jarayonlarni qanday kurting",
+        "options": ["bittu", "double", "yokami", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js sahnalarida kelgani tomonida xodimlar oqimi bulg'annin bayon etiladi",
+        "options": ["salon", "sanoat", "feyk", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js sahnalarida mavjud alojiga zararli sahnalar talablari qaysilar",
+        "options": ["Koshin", "Mos keltirilish", "Kuch", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Next.js sahnalarida service worker Berniyaga qanday qabul qilinadi?",
+        "options": ["khoil boladi", "mutaxassislar va Rossiya", "Tuqqan mintaqda"],
+        "answer": 0
+    }
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+let timer;
+const timeLimit = 20;
+const wrongAnswers = []; // Xato berilgan savollar uchun ro'yxat
+
+function loadQuiz() {
+    const quizContainer = document.getElementById('quiz');
+    const timerElem = document.getElementById('timer');
+    quizContainer.innerHTML = '';
+    timerElem.innerHTML = `20 soniya qoldi!`;
+
+    const q = quizQuestions[currentQuestionIndex];
+
+    const questionElem = document.createElement('div');
+    questionElem.classList.add('question');
+    questionElem.innerHTML = `<p>${currentQuestionIndex + 1}. ${q.question}</p>`;
+
+    q.options.forEach((option, i) => {
+        questionElem.innerHTML += `
+            <label>
+                <input type="radio" name="question${currentQuestionIndex}" value="${i}" onchange="checkAnswer(this)"> ${option}
+            </label><br>
+        `;
+    });
+
+    quizContainer.appendChild(questionElem);
+
+    startTimer();
+}
+
+function startTimer() {
+    let timeRemaining = timeLimit;
+    const timerElem = document.getElementById('timer');
+
+    timer = setInterval(() => {
+        timeRemaining--;
+        timerElem.innerHTML = `${timeRemaining} soniya qoldi!`;
+
+        if (timeRemaining <= 0) {
+            clearInterval(timer);
+            moveToNextQuestion();  // Vaqt tugaganida keyingi savolga o'tish
+        }
+    }, 1000);
+}
+
+function checkAnswer(selectedOption) {
+    clearInterval(timer); // Timerni to'xtatish
+    const q = quizQuestions[currentQuestionIndex];
+
+    // Javobni tekshirish
+    if (parseInt(selectedOption.value) === q.answer) {
+        score++;
+    } else {
+        wrongAnswers.push(currentQuestionIndex); // Xato javob berilgan savol indeksini saqlash
+    }
+
+    moveToNextQuestion(); // Keyingi savolga o'ting
+}
+
+function moveToNextQuestion() {
+    if (currentQuestionIndex < quizQuestions.length - 1) {
+        currentQuestionIndex++;
+        loadQuiz();  // Yangi savolni yuklash
+    } else {
+        showResults(); // Savollar tugadi, natijalarni ko'rsatish
+    }
+}
+
+function showResults() {
+    clearInterval(timer);
+    const resultElem = document.getElementById('result');
+    let resultHTML = `<h2>Natijalar</h2><p>Siz ${score} ta savolga to'g'ri javob berdingiz!</p>`;
+
+    if (wrongAnswers.length > 0) {
+        resultHTML += "<h3>Xato berilgan savollar:</h3>";
+        wrongAnswers.forEach(index => {
+            const question = quizQuestions[index];
+            resultHTML += `<p>${index + 1}. ${question.question} <br> To'g'ri javob: ${question.options[question.answer]}</p>`;
+        });
+    }
+
+    resultElem.innerHTML = resultHTML;
+}
+
+document.getElementById('submit').addEventListener('click', showResults);
+
+loadQuiz();
+</script>
+
+</body>
+</html>

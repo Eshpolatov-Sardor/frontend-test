@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sass Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .question {
+            margin: 10px 0;
+        }
+        button {
+            margin-top: 20px;
+        }
+        .timer {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Sass Test 60 ta</h1>
+
+<div id="quiz">
+    <!-- Savollar joylanadi -->
+</div>
+
+<div id="timer" class="timer">20 soniya qoldi!</div>
+<div>
+    <button id="submit">Natijani ko'rsatish</button>
+</div>
+<div id="result"></div>
+
+<script>
+const quizQuestions = [
+    {
+        "question": "SASS nima?",
+        "options": ["CSS preprocessor", "JavaScript kutubxonasi", "HTML elementlari", "Web framework"],
+        "answer": 0
+    },
+    {
+        "question": "SASS qanday yaxshilanishlar taqdim etadi?",
+        "options": ["Variabllar", "Nesting", "Mixins", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "SASS qaysi sintaksisni ishlatadi?",
+        "options": ["SCSS va indented", "Only SCSS", "Only indented", "Barcha to'g'ri"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda o'zgaruvchini qanday e'lon qilamiz?",
+        "options": ["$variable-name: value;", "@variable-name: value;", "&variable-name: value;", "var variable-name = value;"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda niqob (mixin) qanday yaratiladi?",
+        "options": ["@mixin mixin-name { styles }", "@mixin(mixin-name) { styles }", "mixin: mixin-name { styles }", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda nested stil yozishning afzalliklari nimalardan iborat?",
+        "options": ["Ancha oson yozish", "Kodning yuqori darajada taqsimlanishi", "Kodni takrorlanmasligi", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "SASSda o'zgaruvchidan qanday foydalanamiz?",
+        "options": ["color: $color-name;", "color: @color-name;", "color: #{$color-name};", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda amplifikat(extend) qanday ishlatiladi?",
+        "options": ["@extend .selector", "&:extend(.selector)", ".selector:extend", "Barchasi to'g'ri"],
+        "answer": 0
+    },
+    {
+        "question": "SASS da & belgisi nimani anglatadi?",
+        "options": ["Parent selector", "Child selector", "Nesting selector", "Barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda qanday contentni mixinga yuklash mumkin?",
+        "options": ["@content", "@mixin-content", "content()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda qaysi elementlar shablonlardan foydalanadi?",
+        "options": ["@if, @else", "@while, @for", "Mixins, functions", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "SASSda qachon necklar yoki o'zgaruvchilar muhim?",
+        "options": ["CSS tasdiqlovi uchun", "Takrorlanmaslik uchun", "Tartibni o'rnatadi", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "SASSda margin va paddingning farqi nima?",
+        "options": ["Margin: tashqarida, padding: ichkarida", "Margin: ichkarida, padding: tashqarida", "Ikkalasi bir xil", "no"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda qanday qilib o'zgaruvchini qiymatiga yetib boramiz?",
+        "options": ["using #{$variable}", "without anything", "using $variable", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda interaktiv filterlar qanday parametrlar olib keladi?",
+        "options": ["functions xususiyatlari", "Niksga muvofiq", "global o'zgaruvchilar", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda dastlabki taqdimot qachon o'rnatiladi?",
+        "options": ["To'liq CSS fayli", "Ko'rsatma", "O'zgaruvchilar", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda mixin ichida qayta-qayta ishlatish mumkinmi?",
+        "options": ["Ha", "Yo'q", "Yana bir bor", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASS da turli scroninglar qanday tariflanadi?",
+        "options": ["Bundan ilgari CSS so'zlari", "SASS-da bo'lishi kerak", "CSS chaqiruvlaridan iborat", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda barcha o'zgaruvchilarni qanday ko'rsatamiz?",
+        "options": ["$", "@", "&", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda qaysi asosiy funksiyalar yoritilishi mumkin?",
+        "options": ["Color funksiyasi", "String funksiyasi", "Math funksiyasi", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "SASSda qanday qilib CSS faylini import qilamiz?",
+        "options": ["@import 'file.scss';", "import 'file.scss';", "require 'file.scss';", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda colorlarini qanday belgilaymiz?",
+        "options": ["$color: #ff0000", "$color: 'red'", "color: $color", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda qanday qilib turli dasturdan foydalanaman?",
+        "options": ["CSS o'rganasiz", "SASSga o'shiring", "CSS grammatikasi", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda semi-colon bilan oxirgi satrni yozilishi qanday bo'ladi?",
+        "options": ["ha", "yo'q", "boshqa tartibda", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda o'zgaruvchilarni ob'ekt sifatida belgilash qanday ko'rinadi?",
+        "options": ["$obekt: (property: value);", "$obekt: property: value;", "obekt: { property: value }", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda avvalgi o'lchovlarni qanday ko'rsatamiz?",
+        "options": ["$height: 100px;", "@height: 100px;", "var height = '100px';", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda funktsiyalarni qanday yaratamiz?",
+        "options": ["@function functionName($param) {}", "@function functionName: $param;", "function functionName($param) {}", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda colorini qanday ommaviylashtirasiz?",
+        "options": ["color: $color", "color: @color", "color: #{$color}", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda kodni qayta ishlash uchun qanday qilib yo'l cho'zamiz?",
+        "options": ["@extend", "@import", "@include", "none"],
+        "answer": 2
+    },
+    {
+        "question": "SASSda o'zgaruvchidan protsessorni qanday yaratamiz?",
+        "options": ["@function functionName($param) {}", "functionName(@param) {}", "@mixed('functionName')", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda qanday xususiyatga ega mixinning nazorat qilinishini ko'rishingiz mumkin?",
+        "options": ["@mixin", "@include", "&", "none"],
+        "answer": 1
+    },
+    {
+        "question": "SASSda media querieslarda qanday shartlar ko'rishimiz mumkin?",
+        "options": ["min-width", "max-width", "height", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "SASS nima sababdan bokir xarakterlar ko'rsatishi mumkin?",
+        "options": ["Ko'rsatiladigan sifatlar", "Ishlatilgan belgilar", "Javoblarning umumiy ranglari", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASS da hosilaga kiritilgan zichlik qanday ko'rinadi?",
+        "options": ["@each", "@for", "@while", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda zaxiralash uchun kerakli qismlarning ixtiyoriy bo'lishi nimani anglatadi?",
+        "options": ["O'zgarmas", "Qayta ishlanmas", "Asosiy yarim", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda o'zgaruvchilar buni qanday e'lon qilish mumkin?",
+        "options": ["$height: 20px;", "@height: 20px;", "var height = '20px';", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda colorlarini bosqichma-bosqich ko'rinishi qanday bo'ladi?",
+        "options": ["To'liq rang ko'rinishi", "Bo'sh rang", "Ko'p rangdan ma'lumot ichida", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda o'zgaruvchilarni kako ostida olsak qanday foydali bo'ladi?",
+        "options": ["Foyda hamlangan vaqt", "Ishtirok etmaslik", "Foydalanuvchilarga sir eslatish", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda ixtisoslashgan muda ni qanday e'lon qilamiz?",
+        "options": ["@define mixin", "@mixin", "injected mixin", "none"],
+        "answer": 1
+    },
+    {
+        "question": "SASSda interesting xususiyatlar qanday bo'ladi?",
+        "options": ["$heights: (50px, 100px);", "$height: (50px, 100px);","Nozlar xususiyatlarda bo'ladi", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASS da itoat nafaqasi ko'rsatilishi qanday ko'rinadi?",
+        "options": ["@extend .made-me", "made-me @extend", ".made-me:extend", "Barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "SASS da raraq(collors) nima uchun kerak?",
+        "options": ["Tasvir", "O'zgaruvchilar", "Barcha ranglar bo'yicha", "none"],
+        "answer": 2
+    },
+    {
+        "question": "SASS da CSS ga solishtirganda nimani afzal ko'radi?",
+        "options": ["Qayta tiklov", "Olayotgan kodlarning og'irligi", "Bo'shanib turishi", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASS da yagona qiymat muhimligi haqida nima demoqdasiz?",
+        "options": ["Yagona qiymat o'rnida bo'lmaydi", "Bir xil emas", "Muvofaqlik yo'q", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda konvertatsiya qilinishini qanday ko'rinadi?",
+        "options": ["@convention", "@to", "@bring", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda ranglar bilan o'zgarmas sotib olishni qo'llaymizmi?",
+        "options": ["Ha", "Yo'q", "Barchasi", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASS da baharlarsiz taziyalardan qaysi usulidar foydalanamiz?",
+        "options": ["Barchasi", "Aytish", "Text qoliplariga muvofiq", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASS da deb asl xujjat qaysi belgilarni ko'rishimiz mumkin?",
+        "options": ["Eng yangi", "Ko'p qismi", "Iqqansı", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASSda har bir xususiyatni ko'rsatish juda to'g'ri mi?",
+        "options": ["Asosiy", "Boshqaruvchi", "Saylovchi", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASS da rangli tiplar qanday ko'rinadi?",
+        "options": ["$color: color (s, c);", "$color: #color;", "color $color:;", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASS da tugmalar rangini qanday ko'rinadi?",
+        "options": ["$button-color: #f00;", "$button-color: crimson;", "$button: color (#c00);", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASS da rangli tugmalar qanday tasvirlanadi?",
+        "options": ["color: button-color", "color: $button-color;", "color $button-color;", "none"],
+        "answer": 1
+    },
+    {
+        "question": "SASS da filtrlar qanday belgilanishi mumkin?",
+        "options": ["@filter", "@filter: foo;", "filter: bar;", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASS da nemaslar qachon ko'rinadi?",
+        "options": ["Odatda", "Mitologik xususiyatlar", "Odatda", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASS da qachon fayllar yo'q qilinishi mumkin?",
+        "options": ["Siz buni xohlayotganingizda", "Me'yorga ko'ra", "Tahrir qilinayotgan bo'lsa", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASS iqatket kacam va ko'r ishlarni qanday tasvirlab beradi?",
+        "options": ["color function function (cb)", "getColor()", "none", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASS da color muhimligi qanday bo'ladi?",
+        "options": ["Hech bir xususiyatga muvofiq", "Xususiy muhim", "Hech qanday xususiyatlarni muvofiq ko'rmaydi", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASS da rang tomini qanday ko'rinadi?",
+        "options": ["color (#color);”, “$color-a: color([]);", "color: #color", "none"],
+        "answer": 0
+    },
+    {
+        "question": "SASS da muhim qismlarni qayta tiklash usuli qanday bo'ladi?",
+        "options": ["npm install -- save -- global sass", "npm install sass", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "SASSda kontektor qaysi-bir usul bilan ko'rinadi?",
+        "options": ["colorize()", "createColor", "mining()", "none"],
+        "answer": 0
+    }
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+let timer;
+const timeLimit = 20;
+const wrongAnswers = []; // Xato berilgan savollar uchun ro'yxat
+
+function loadQuiz() {
+    const quizContainer = document.getElementById('quiz');
+    const timerElem = document.getElementById('timer');
+    quizContainer.innerHTML = '';
+    timerElem.innerHTML = `20 soniya qoldi!`;
+
+    const q = quizQuestions[currentQuestionIndex];
+
+    const questionElem = document.createElement('div');
+    questionElem.classList.add('question');
+    questionElem.innerHTML = `<p>${currentQuestionIndex + 1}. ${q.question}</p>`;
+
+    q.options.forEach((option, i) => {
+        questionElem.innerHTML += `
+            <label>
+                <input type="radio" name="question${currentQuestionIndex}" value="${i}" onchange="checkAnswer(this)"> ${option}
+            </label><br>
+        `;
+    });
+
+    quizContainer.appendChild(questionElem);
+
+    startTimer();
+}
+
+function startTimer() {
+    let timeRemaining = timeLimit;
+    const timerElem = document.getElementById('timer');
+
+    timer = setInterval(() => {
+        timeRemaining--;
+        timerElem.innerHTML = `${timeRemaining} soniya qoldi!`;
+
+        if (timeRemaining <= 0) {
+            clearInterval(timer);
+            moveToNextQuestion();  // Vaqt tugaganida keyingi savolga o'tish
+        }
+    }, 1000);
+}
+
+function checkAnswer(selectedOption) {
+    clearInterval(timer); // Timerni to'xtatish
+    const q = quizQuestions[currentQuestionIndex];
+
+    // Javobni tekshirish
+    if (parseInt(selectedOption.value) === q.answer) {
+        score++;
+    } else {
+        wrongAnswers.push(currentQuestionIndex); // Xato javob berilgan savol indeksini saqlash
+    }
+
+    moveToNextQuestion(); // Keyingi savolga o'ting
+}
+
+function moveToNextQuestion() {
+    if (currentQuestionIndex < quizQuestions.length - 1) {
+        currentQuestionIndex++;
+        loadQuiz();  // Yangi savolni yuklash
+    } else {
+        showResults(); // Savollar tugadi, natijalarni ko'rsatish
+    }
+}
+
+function showResults() {
+    clearInterval(timer);
+    const resultElem = document.getElementById('result');
+    let resultHTML = `<h2>Natijalar</h2><p>Siz ${score} ta savolga to'g'ri javob berdingiz!</p>`;
+
+    if (wrongAnswers.length > 0) {
+        resultHTML += "<h3>Xato berilgan savollar:</h3>";
+        wrongAnswers.forEach(index => {
+            const question = quizQuestions[index];
+            resultHTML += `<p>${index + 1}. ${question.question} <br> To'g'ri javob: ${question.options[question.answer]}</p>`;
+        });
+    }
+
+    resultElem.innerHTML = resultHTML;
+}
+
+document.getElementById('submit').addEventListener('click', showResults);
+
+loadQuiz();
+</script>
+
+</body>
+</html>

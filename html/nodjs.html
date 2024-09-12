@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node js Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .question {
+            margin: 10px 0;
+        }
+        button {
+            margin-top: 20px;
+        }
+        .timer {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Node js Test 73 ta</h1>
+
+<div id="quiz">
+    <!-- Savollar joylanadi -->
+</div>
+
+<div id="timer" class="timer">20 soniya qoldi!</div>
+<div>
+    <button id="submit">Natijani ko'rsatish</button>
+</div>
+<div id="result"></div>
+
+<script>
+const quizQuestions = [
+    {
+        "question": "Node.js nima?",
+        "options": ["JavaScript runtime", "Java framework", "Python library", "PHP framework"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js qaysi muhitda ishlaydi?",
+        "options": ["Serverda", "Brauzerda", "Mobil qurilmalarda", "Faqat desktopda"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js dan qaysi paket menejeri foydalaniladi?",
+        "options": ["npm", "yarn", "bower", "pip"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da Web serverni qanday yaratamiz?",
+        "options": ["http.createServer()", "server.create()", "express.createServer()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da xatolarni qanday tutamiz?",
+        "options": ["try/catch", "throw", "error()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da asinxron funksiyalar qanday ishlaydi?",
+        "options": ["Callback funksiyalari orqali", "Senkron funksiyalar orqali", "Barcha dhe", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da 'npm init' buyruqining maqsadi nima?",
+        "options": ["Package.json faylini yaratish", "Node.js ni o'rnatish", "Serverni boshlash", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da fayllarni o'qish va yozish uchun qaysi moduldan foydalanamiz?",
+        "options": ["fs", "http", "path", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da qaysi xususiyatlar suborning funktsiyasi sifatida ishlaydi?",
+        "options": ["Event emitters", "Callbacks", "Promises", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da middleware nima?",
+        "options": ["Request va response orasidagi ishlov beruvchi", "Static fayl ko'rsatuvchi", "Error handler", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da qaysi usul orqali HTTP so'rovlarini ko'rib chiqamiz?",
+        "options": ["res.send()", "req.read()", "http.method()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da express frameworkining maqsadi nima?",
+        "options": ["Web ilovalarini yaratish", "Fayllarni yuklash", "Muammo bartaraf qilish", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da qaysi modul RESTful API ni yaratish uchun asosiy bo'ladi?",
+        "options": ["express", "axios", "http", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da qaysi buyruq loyiha boshqarish uchun kerak?",
+        "options": ["npm install", "node start", "npm run", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js imkoniyatlarini inobatga olgan holda, qaysi sharhida buyruqda ishlaydigan dasturlar muhim bo'ladi?",
+        "options": ["Asinxron dasturlash", "Senkron dasturlash", "Interaktiv dasturlash", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da qaysi metodni HTTP so'rovlariga javob berish uchun ishlatamiz?",
+        "options": ["response.end()", "res.send()", "http.get()", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Node.js da `process.env` orqali nima olamiz?",
+        "options": ["Muhit o'zgaruvchilarini", "Tizim o'zgaruvchilarini", "Fayl yuklash", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da 'next()' qachon ishlatiladi?",
+        "options": ["Middleware dan keyin", "Callback ichida", "HTTP so'rovlarida", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da qaysi metod yordamida fayl nomini olish mumkin?",
+        "options": ["path.basename()", "path.join()", "path.resolve()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da eventlar qanday ishlaydi?",
+        "options": ["EventEmitter orqali", "Callbacks orqali", "Promises orqali", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da ulangan portni qanday ko'ramiz?",
+        "options": ["app.listen(port)", "server.bind(port)", "express.port(port)", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da fayllarni sinxron o'qish uchun qaysi metodni ishlatamiz?",
+        "options": ["fs.readFileSync()", "fs.readFile()", "fs.open()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da ma'lumotlar bazasi bilan ishlash uchun qaysi kutubxonadan foydalanamiz?",
+        "options": ["mongoose", "Redux", "SQLAlchemy", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da xatolarni qaytarishda qanday usul ishlatiladi?",
+        "options": ["Error handling", "Throwing errors", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Node.js da asinxron kodni boshqarish uchun qanday xususiyatlar mavjud?",
+        "options": ["Promise", "Async/Await", "Callbacks", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Node.js da statik fayllarni qanday xizmat ko'rsatamiz?",
+        "options": ["express.static()", "http.serveStatic()", "serve()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da qaysi modul yordamida HTTPS server yaratamiz?",
+        "options": ["https", "http", "secure", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da asynchronous IT hozirda qanday kugi olingan?",
+        "options": ["Asynchronous operations", "Promise-chaining", "Async/Await", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Node.js da fayllarni o'qish va yozish uchun qaysi usuldan foydalanamiz?",
+        "options": ["fs.appendFile()", "fs.writeFile()", "fs.readFile()", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Node.js da boshqa kutubxona ni yuklashni qanday amalga oshiramiz?",
+        "options": ["npm install package-name", "yarn add package-name", "None", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Node.js da get() so'rovlarini qanday ko'rib chiqamiz?",
+        "options": ["app.get('/path', callback)", "get('/path', callback)", "app.request('/path', callback)", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da qaysi dalda lobbarlar bilan muomala qilishimiz mumkin?",
+        "options": ["Asynchronous I/O", "Fs read/write", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Node.js yordamida ko'p tarmoqli dasturlash qanday ko'rinishga ega?",
+        "options": ["Tarmoq arxitekturasi", "Senkron dasturlash", "Senkron va asinxron dasturlash", "Barchasi"],
+        "answer": 2
+    },
+    {
+        "question": "Node.js da qaysi modul bilan ishlash kerak?",
+        "options": ["http", "fs", "path", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Node.js da qaysi yondashuv HTTP mijoz va server o'rtasida qanday aloqa o'rnatadi?",
+        "options": ["RESTful API", "Rémi Tutkunasi", "Standard protocol", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da asinxron dasturlash nima?",
+        "options": ["Operatsiyalarni takrorlashni taklif qiluvchi dasturlash", "Senkron xatti-harakatlarni taqdim etish", "Reaksiya o'zgarishini kuzatish", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da qanday qilib API ga so'rov yuborish mumkin?",
+        "options": ["axios.get()", "request.get()", "fetch()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da qaysi metod orqali jadvallarni yaratamiz?",
+        "options": ["SQL.createTable()", "mongoose.create()", "none", "mongo.create()"],
+        "answer": 1
+    },
+    {
+        "question": "Node.js dasturini qaysi buyruq bilan ishga tushiramiz?",
+        "options": ["node app.js", "npm start", "yarn run", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da qaysi so'rov orqali ma'lumotlarni uzatamiz?",
+        "options": ["POST metodi", "GET metodi", "PATCH metodi", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Node.js da xavfsizlikni ta'minlash uchun qanday chora ko'rishimiz kerak?",
+        "options": ["CORS ni sozlash", "Heniy templating", "Barcha yondashuvlar", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da muammoni bartaraf etish uchun qaysi mexanizmdan foydalanamiz?",
+        "options": ["Logging", "Callback functions", "Error handling", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Node.js da qaysi metod orqali faylni o'qishimiz mumkin?",
+        "options": ["fs.readFile()", "fs.open()", "fs.writeFile()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da logger yaratish uchun qaysi moduldan foydalanamiz?",
+        "options": ["winston", "logger", "debug", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da Template Engine qanday ishlaydi?",
+        "options": ["Pug, EJS", "Express", "MongoDB", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da faylni o'qish va yozish turi qanday yoziladi?",
+        "options": ["fs.readFileSync('/path/to/file')", "fs.writeFileSync('/path/to/file', 'content')", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Node.js dasturida ma'lumotlarni caching qilish uchun qaysi caching mexanizmidan foydalanamiz?",
+        "options": ["Redis", "MongoDB", "SQL", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js dasturini muammosiz qanday tuzamiz?",
+        "options": ["Modulyar tuzilish", "Yagona faylda", "Code adhoc qilish", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da Incidentni qanday xatolik va muammo deb hisoblaysiz?",
+        "options": ["Monitoring va logs orqali", "Request jazolash", "Farqlash", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da faylni yozish va o'qish jarayonini qanday tajribali usullar bilan amalga oshiramiz?",
+        "options": ["fs.writeFileSync()", "fs.readFileSync()", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Node.js da qaysi qulayliklar tezligini oshiradi?",
+        "options": ["Asynchronizing", "Blocking", "Senkron", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da web server dasturini tuzishda qaysi protocol dan foydalanamiz?",
+        "options": ["HTTP", "HTTPS", "WebSocket", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Node.js dasturida duble proektnik ishlatishimiz mumkinki, bu nimani anglatadi?",
+        "options": ["Xatolar hisobi", "Service-worker", "Barchasi", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da muammolarni qanday qilamiz?",
+        "options": ["Error handling", "Debugging", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Node.js da asynchronous dasturlash nima?",
+        "options": ["Qaytish qo'llash", "Xatolarni nazorat qilish", "Tez niqob qilish", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js dasturini saqlash va jo'natish qanday amalga oshiriladi?",
+        "options": ["Express va MongoDB farkida", "Node.js dasturida", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Node.js da API-lar yaratish uchun qanday Xatoliklar zarur?",
+        "options": ["Flask", "Django", "Express", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Node.js da HTTP so'rovlarini qanday ko'ramiz?",
+        "options": ["req.body", "req.query", "req.params", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Node.js da static fayllarni qanday o'tkazzamiz?",
+        "options": ["express.static()", "static.server()", "app.Static()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da qaysi xususiyat orqali zarur bo'lgan resurslarni yuklab olish imkonini berasiz?",
+        "options": ["Caching", "Concurrency", "Routing", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da fayllarni qanday o'rnatamiz?",
+        "options": ["fs.open()", "fs.read()", "fs.write()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js tilida qaysi monitoring xodimi yordamida xatolarni kuzatib boramiz?",
+        "options": ["NewRelic", "Git", "Dropbox", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da qaysi resurs tizimi orqali xatolar ko'rsatiladi?",
+        "options": ["Morgan", "Winston", "Pino", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Node.js da dispatch yordamida xatolarni qayta ko'rsatishimiz mumkinmi?",
+        "options": ["Yezi galvanisini qaytaring", "Proyektni qaytaring", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Node.js da fayllarni o'qish metodidan foydalanayotganimizda, qanday sinov bor?",
+        "options": ["fs.readdir()", "fs.readfile()", "fs.read()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js dasturida faylni meta ma'lumotlarni olish uchun qanday usulni ishlatamiz?",
+        "options": ["fs.stat()", "filesystem()", "path.extname()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da faylning oxirgi ruxsatlarini qaytarish qayta ishlanadi?",
+        "options": ["fs.open()", "fs.unlink()", "fs.close()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js dasturida so'rovlar va javoblar qanday amalga oshiriladi?",
+        "options": ["req.body va res.json()", "req.params va res.send()", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Node.js da fayllarni xalqda qanday o'qiganmiz?",
+        "options": ["filefs.read()", "Redis.read()", "fs.readdirectory()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da asinxron dasturlarni qanday yaratsak bo'ladi?",
+        "options": ["Callback funksiyalaridan foydalanish", "Promise uchun", "Flow usuli bilan", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da global parametrlar qaysi sintaksis bilan yoziladi?",
+        "options": ["process.params", "req.params", "global.params", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Node.js da fayllardan o'qish xavfsizligiga qanday qaraymiz?",
+        "options": ["Winston-nazoratlar", "Lib-faylni anglash", "O'z holaga bag'ishlanish", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Node.js da loglarni qanday tayinlaymiz?",
+        "options": ["FS logging library", "Hodisa va xatolarni yo'qotish", "Barchasi", "none"],
+        "answer": 2
+    }
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+let timer;
+const timeLimit = 20;
+const wrongAnswers = []; // Xato berilgan savollar uchun ro'yxat
+
+function loadQuiz() {
+    const quizContainer = document.getElementById('quiz');
+    const timerElem = document.getElementById('timer');
+    quizContainer.innerHTML = '';
+    timerElem.innerHTML = `20 soniya qoldi!`;
+
+    const q = quizQuestions[currentQuestionIndex];
+
+    const questionElem = document.createElement('div');
+    questionElem.classList.add('question');
+    questionElem.innerHTML = `<p>${currentQuestionIndex + 1}. ${q.question}</p>`;
+
+    q.options.forEach((option, i) => {
+        questionElem.innerHTML += `
+            <label>
+                <input type="radio" name="question${currentQuestionIndex}" value="${i}" onchange="checkAnswer(this)"> ${option}
+            </label><br>
+        `;
+    });
+
+    quizContainer.appendChild(questionElem);
+
+    startTimer();
+}
+
+function startTimer() {
+    let timeRemaining = timeLimit;
+    const timerElem = document.getElementById('timer');
+
+    timer = setInterval(() => {
+        timeRemaining--;
+        timerElem.innerHTML = `${timeRemaining} soniya qoldi!`;
+
+        if (timeRemaining <= 0) {
+            clearInterval(timer);
+            moveToNextQuestion();  // Vaqt tugaganida keyingi savolga o'tish
+        }
+    }, 1000);
+}
+
+function checkAnswer(selectedOption) {
+    clearInterval(timer); // Timerni to'xtatish
+    const q = quizQuestions[currentQuestionIndex];
+
+    // Javobni tekshirish
+    if (parseInt(selectedOption.value) === q.answer) {
+        score++;
+    } else {
+        wrongAnswers.push(currentQuestionIndex); // Xato javob berilgan savol indeksini saqlash
+    }
+
+    moveToNextQuestion(); // Keyingi savolga o'ting
+}
+
+function moveToNextQuestion() {
+    if (currentQuestionIndex < quizQuestions.length - 1) {
+        currentQuestionIndex++;
+        loadQuiz();  // Yangi savolni yuklash
+    } else {
+        showResults(); // Savollar tugadi, natijalarni ko'rsatish
+    }
+}
+
+function showResults() {
+    clearInterval(timer);
+    const resultElem = document.getElementById('result');
+    let resultHTML = `<h2>Natijalar</h2><p>Siz ${score} ta savolga to'g'ri javob berdingiz!</p>`;
+
+    if (wrongAnswers.length > 0) {
+        resultHTML += "<h3>Xato berilgan savollar:</h3>";
+        wrongAnswers.forEach(index => {
+            const question = quizQuestions[index];
+            resultHTML += `<p>${index + 1}. ${question.question} <br> To'g'ri javob: ${question.options[question.answer]}</p>`;
+        });
+    }
+
+    resultElem.innerHTML = resultHTML;
+}
+
+document.getElementById('submit').addEventListener('click', showResults);
+
+loadQuiz();
+</script>
+
+</body>
+</html>

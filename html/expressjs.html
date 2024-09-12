@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Express js Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .question {
+            margin: 10px 0;
+        }
+        button {
+            margin-top: 20px;
+        }
+        .timer {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Express js Test 67 ta</h1>
+
+<div id="quiz">
+    <!-- Savollar joylanadi -->
+</div>
+
+<div id="timer" class="timer">20 soniya qoldi!</div>
+<div>
+    <button id="submit">Natijani ko'rsatish</button>
+</div>
+<div id="result"></div>
+
+<script>
+const quizQuestions = [
+    {
+        "question": "Express.js nima?",
+        "options": ["Web framework for Node.js", "Database management system", "Frontend framework", "CSS library"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js ni qanday ishlatamiz?",
+        "options": ["npm install express", "yarn add express", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Express.js da yozilgan dasturlar qaysi protokol asosida ishlaydi?",
+        "options": ["HTTP", "FTP", "SMTP", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da URL yo'nalishlarini qanday belgilaymiz?",
+        "options": ["app.get('/path', callback)", "app.route('/path')", "app.path('/path')", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da middleware nima?",
+        "options": ["So'rovlar va javoblar uchun ishlov beruvchi", "Router", "Database", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da POST so'rovini qanday ko'rib chiqamiz?",
+        "options": ["app.post('/path', callback)", "app.receive('/path', callback)", "app.send('/path', callback)", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da statik fayllarni qanday xizmat qilamiz?",
+        "options": ["express.static()", "staticServe()", "app.serveStatic()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da xatolarni qanday tutamiz?",
+        "options": ["app.use((err, req, res, next))", "app.error()", "res.sendError()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da middlewareni qanday qo'shamiz?",
+        "options": ["app.use(middleware)", "app.useMiddleware(middleware)", "app.add(middleware)", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da dastur qayerda boshlanadi?",
+        "options": ["app.listen(port)", "app.start(port)", "server.listen(port)", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da dinamik sahnalar yaratish uchun qaysi metoddan foydalanamiz?",
+        "options": ["res.render()", "res.send()", "res.json()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da qanday qilib query parametrlarini olamiz?",
+        "options": ["req.query", "req.params", "req.body", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da URL yo'nalishlari qanday o'zaro bog'lanadi?",
+        "options": ["Router", "Middleware", "Controller", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da ko'p sahnalik dastur qanday o'rnatiladi?",
+        "options": ["Routerlar yordamida", "Middlewarelar yordamida", "Controllers yordamida", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da sessionlarni qanday qo'shamiz?",
+        "options": ["express-session moduli yordamida", "session moduli yordamida", "cookie-parser yordamida", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da qaysi metod yordamida JSON formatda javob yuboramiz?",
+        "options": ["res.json()", "res.sendJson()", "res.responseJson()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da faylni yuklash uchun qaysi kutubxonadan foydalanamiz?",
+        "options": ["multer", "upload-file", "file-upload", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da cookie larni qanday saqlaymiz?",
+        "options": ["res.cookie()", "req.cookie()", "setcookie()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js dasturida biror yo'llanmani qanday yoqtiradi?",
+        "options": ["app.all('/path', callback)", "app.route('/path')", "app.get('/path')", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da HTTP xatoliklarini qanday ko'ramiz?",
+        "options": ["using error middleware", "with app.use()", "with res.send()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da session ma'lumotlari qayerda saqlanadi?",
+        "options": ["memory", "database", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Express.js da Body Parser nima?",
+        "options": ["So'rovlar tanasini o'qish uchun middleware", "Xato ko'rsatish", "JSON formatdagi ma'lumot", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da helmet moduli nima?",
+        "options": ["Xavfsizlik qo'shimchalari moduli", "Yozilishni nazorat qilish", "Mijozdan talablar yaratish", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js dasturi qanday qilish mumkin?",
+        "options": ["npm start", "node app.js", "node start", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Express.js serverini asinxron usulda ishga tushirish uchun qaysi yondashuvni qo'llaymiz?",
+        "options": ["async/await", "Promises", "Callbacks", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Express.js da callback funksiyalarini qanday ishlatamiz?",
+        "options": ["app.get('/path', (req, res) => {})", "app.get('/path', callback)", "none", "app.get('/path', function)"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da multer yordamida faylni yuklashda qanday imkoniyatlar mavjud?",
+        "options": ["Max file size", "allowed file types", "Destination folder", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Express.js da routers qanday ishlaydi?",
+        "options": ["Sub-routerlardan foydalanib", "Barchasi", "Middleware yordamida", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Express.js da statik fayllarni ko'rsatish uchun qaysi usuldan foydalanamiz?",
+        "options": ["app.use(express.static('public'))", "app.static('public')", "none", "express.public('public')"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da requestlardan body ni qanday olamiz?",
+        "options": ["req.body", "bodyParser(req)", "req.params", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da xavfsizlikni qanday ta'minlaymiz?",
+        "options": ["Helmet, CORS, Rate Limiting", "Yozuvni tekshirish", "Qo'shimcha bog'lanish", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da qanday qilib ko'p tilli responsive dastur ishlab chiqamiz?",
+        "options": ["i18n moduli", "express.tiling()", "Localization", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da o'zgartiruvchi middleware qanday ishlaydi?",
+        "options": [" req.body.includes()", "app.use()", "app.get()", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Express.js da ko'p URL larni bir joyda ro'yxatdan o'tkazish uchun qaysi metoddan foydalanamiz?",
+        "options": ["Router", "app.all()", "app.group()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js dasturida autentifikatsiya uchun qaysi kutubxonalar keng qo'llaniladi?",
+        "options": ["Passport", "OAuth", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Express.js da ma'lumotlar bazasidagi ORM sifatida qaysi modullardan foydalanamiz?",
+        "options": ["Sequelize", "Mongoose", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Express.js dasturida yo'nalishrak yaxshilash uchun qaysi xususiyatni qo'shish mumkin?",
+        "options": ["Router redirect", "Express.route.js", "Statik usul", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js dasturida xatoliklar ishlov berish uchun qaysi method mavjud?",
+        "options": ["app.use((err, req, res, next) => {})", "app.reset()", "middleware()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da service worker qanday ishlaydi?",
+        "options": ["Barcha so'rovlarni uzatadi", "Muhitga bog'liq", "Server funksiyasi", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da dastur xatolari oldini olish uchun qaysi usullar mavjud?",
+        "options": ["Restful services", "API primitives", "named routes", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da dastur xatolarini qanday ko'ra olamiz?",
+        "options": ["Barcha so'rovlar orqali", "req.user", "req.error", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js dan olingan so'rovlarni qanday tiklashimiz mumkin?",
+        "options": ["session", "reuse", "create new function", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da POST, PUT, DELETE so'rovlarini qanday ko'rib chiqamiz?",
+        "options": ["app.route()", "app.all()", "app.http()", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Express.js da bottant so'rovlarni qanday qiladi?",
+        "options": ["use middleware to parse data", "extract from body", "use variables", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da sessionlarni qanday boshqaramiz?",
+        "options": ["express-session", "req.session", "session data", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da API-lar parametrlarini qanday olamiz?",
+        "options": ["req.params", "req.headers", "res.body", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js dasturida debug uchun qaysi kutubxona ishlatiladi?",
+        "options": ["morgan", "nodemon", "debug", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js dasturida dynamic routing qanday ko'rinadi?",
+        "options": ["app.get('/users/:id')", "app.get('/users/id')", "app.get('/users?id')", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da ko'p predmetli RESTful API ni qanday yaratamiz?",
+        "options": ["app.use('/api/v1', router)", "app.append('/api', router)", "app.add('/api', router)", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da Boshqa joyda mavjud bo'lgan so'rovlarni qanday tutamiz?",
+        "options": ["302 Redirection", "404 Error", "Barcha Uruguaylar", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da API-larda sertifikatlarni qo'llash uchun qaysi kutubxonadan foydalanamiz?",
+        "options": ["jsonwebtoken", "bcrypt", "redis", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da dynamic contentni noyabr orqali qanday taqdim etamiz?",
+        "options": ["res.render()", "res.display()", "res.present()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js dasturida OAuth 2.0 qanday ishlaydi?",
+        "options": ["Barcha blokni olish uchun", "URL orqali ma'lumotni olish", "Server orqali yuklab olish", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da `next()` usuli nima?",
+        "options": ["Middleware kelishi bo'yicha chaqiradi", "HTTP so'rovlarini o'rnatadi", "Barcha NAV nerd time", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da fayllarni yuklash jarayonida controller qanday bo'lishi kerak?",
+        "options": ["Fayl yuklaydi", "so'rovni tekshirish", "Jo'natishni rad etish", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js dasturida CORS nima?",
+        "options": ["Cross-Origin Resource Sharing", "Content Origin Resolution", "Channel Origin Route", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da Uniqlxlni qanday ko'ramiz?",
+        "options": ["app.dinamicxl", "app.controller", "app.idt", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js dasturida qaysi operatsiyalar raqobatdagi grupalarda ishlatiladi?",
+        "options": ["GET, POST, PUT, DELETE", "No, So'ra yo'qligini bor", "GET, PUT, DELETE, UPDATE", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da tanlovda funktsiyalar qanday aniqlanadi?",
+        "options": ["Barcha ansambli yoki ", "Faylning oziysi", "none", "Sonlar bo'lsa props"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da faylda xato qanday tayinlanadi?",
+        "options": ["Xatoni nazorat qiling", "Ishqa xatolar", "none", "Buni ko'zlang"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da xatolarni qanday qaytarishimiz mumkin?",
+        "options": ["xatolarni bartaraf qiling", "son o'zgaruvchisi", "Nior xatolarni bilish", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js dasturida asinxron yondashuvni o'rnatish to'g'risida nima deyish mumkin?",
+        "options": ["Obyektlarni qayta qaytarish", "yanada tez aloj qilish", "Barcha ko'rsatilgan tafsifiklar", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da fayl kvotasi qanday qilib yaqindan qanday korinishga ega bo'ladi?",
+        "options": ["Informatura yozuvi", "Boshqaruvchi yordamgarni xatolar qiladi", "none", "Xatoning tutishi"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js dasturida qaysi yordamdan foydalanamiz?",
+        "options": ["Passport", "Mongoose", "Postman", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da maqsad qanday malumotlardan iborat?",
+        "options": ["Qiyin ishlaydi", "Oddiyroq foydalansa ham", "Xizmat sifatida yordam beradi", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js da dasturlarni loyihalashda qanday yordam beramiz?",
+        "options": ["Express ni o'rnatamiz", "Yonu solamiz", "Barcha tarqatilishlar", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Express.js dasturini yaratish va muhlatni chiqarish uchun qaysi method ishlatiladi?",
+        "options": ["app.enable()", "app.listen()", "app.generate()", "none"],
+        "answer": 1
+    }
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+let timer;
+const timeLimit = 20;
+const wrongAnswers = []; // Xato berilgan savollar uchun ro'yxat
+
+function loadQuiz() {
+    const quizContainer = document.getElementById('quiz');
+    const timerElem = document.getElementById('timer');
+    quizContainer.innerHTML = '';
+    timerElem.innerHTML = `20 soniya qoldi!`;
+
+    const q = quizQuestions[currentQuestionIndex];
+
+    const questionElem = document.createElement('div');
+    questionElem.classList.add('question');
+    questionElem.innerHTML = `<p>${currentQuestionIndex + 1}. ${q.question}</p>`;
+
+    q.options.forEach((option, i) => {
+        questionElem.innerHTML += `
+            <label>
+                <input type="radio" name="question${currentQuestionIndex}" value="${i}" onchange="checkAnswer(this)"> ${option}
+            </label><br>
+        `;
+    });
+
+    quizContainer.appendChild(questionElem);
+
+    startTimer();
+}
+
+function startTimer() {
+    let timeRemaining = timeLimit;
+    const timerElem = document.getElementById('timer');
+
+    timer = setInterval(() => {
+        timeRemaining--;
+        timerElem.innerHTML = `${timeRemaining} soniya qoldi!`;
+
+        if (timeRemaining <= 0) {
+            clearInterval(timer);
+            moveToNextQuestion();  // Vaqt tugaganida keyingi savolga o'tish
+        }
+    }, 1000);
+}
+
+function checkAnswer(selectedOption) {
+    clearInterval(timer); // Timerni to'xtatish
+    const q = quizQuestions[currentQuestionIndex];
+
+    // Javobni tekshirish
+    if (parseInt(selectedOption.value) === q.answer) {
+        score++;
+    } else {
+        wrongAnswers.push(currentQuestionIndex); // Xato javob berilgan savol indeksini saqlash
+    }
+
+    moveToNextQuestion(); // Keyingi savolga o'ting
+}
+
+function moveToNextQuestion() {
+    if (currentQuestionIndex < quizQuestions.length - 1) {
+        currentQuestionIndex++;
+        loadQuiz();  // Yangi savolni yuklash
+    } else {
+        showResults(); // Savollar tugadi, natijalarni ko'rsatish
+    }
+}
+
+function showResults() {
+    clearInterval(timer);
+    const resultElem = document.getElementById('result');
+    let resultHTML = `<h2>Natijalar</h2><p>Siz ${score} ta savolga to'g'ri javob berdingiz!</p>`;
+
+    if (wrongAnswers.length > 0) {
+        resultHTML += "<h3>Xato berilgan savollar:</h3>";
+        wrongAnswers.forEach(index => {
+            const question = quizQuestions[index];
+            resultHTML += `<p>${index + 1}. ${question.question} <br> To'g'ri javob: ${question.options[question.answer]}</p>`;
+        });
+    }
+
+    resultElem.innerHTML = resultHTML;
+}
+
+document.getElementById('submit').addEventListener('click', showResults);
+
+loadQuiz();
+</script>
+
+</body>
+</html>

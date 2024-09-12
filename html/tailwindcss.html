@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tilwind css Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .question {
+            margin: 10px 0;
+        }
+        button {
+            margin-top: 20px;
+        }
+        .timer {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Tailwind css Test 61 ta</h1>
+
+<div id="quiz">
+    <!-- Savollar joylanadi -->
+</div>
+
+<div id="timer" class="timer">20 soniya qoldi!</div>
+<div>
+    <button id="submit">Natijani ko'rsatish</button>
+</div>
+<div id="result"></div>
+
+<script>
+const quizQuestions = [
+    {
+        "question": "Tailwind CSS nima?",
+        "options": ["CSS framework", "JavaScript library", "HTML template engine", "CSS preprocessor"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSning asosiy afzalliklaridan biri nima?",
+        "options": ["Tezkor foydalanuvchi interfeysi yaratish", "JavaScript o'rnini bosadi", "Odatda CSS-ning o'zgaruvchilari", "Barcha CSS kodini minimallashtiradi"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda qanday qilib maxsus stil yaratamiz?",
+        "options": ["@apply direktivasi orqali", "style atributi orqali", "CSS fayli orqali", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwindda hosil qilib bo'lmaydigan grid tizimi qanday yoziladi?",
+        "options": ["grid", "grid-cols-3", "grid-template-columns: 3", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Tailwind CSSda fon rangini qanday o'rnatamiz?",
+        "options": ["bg-color", "bg-color-{color}", "bg-{color}", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Tailwind CSSda paddingni qanday qo'shamiz?",
+        "options": ["p-{value}", "padding-{value}", "pad-{value}", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda fleksni qanday ishlatamiz?",
+        "options": ["flex", "display: flex", "flexbox", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda qaysi xususiyatlar uchun 'text' prefiksidan foydalaniladi?",
+        "options": ["Matn rangi", "Matn o'lchami", "Matn pozitsiyasi", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Tailwind CSSda qaysi yordamchi klass yordamida border qo'shamiz?",
+        "options": ["border", "border-{color}", "border-{size}", "Barchasi"],
+        "answer": 1
+    },
+    {
+        "question": "Tailwind CSSda 'hover' holatini qanday yozamiz?",
+        "options": ["hover:bg-red-500", "bg-red-500:hover", "hover:red", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSS ishlatishdan oldin qaysi mantiqiy xatolikni tuzatish kerak?",
+        "options": ["Bundled CSS", "Enable JIT mode", "Compile SASS", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Tailwindda responsive dizayn qanday ishlatiladi?",
+        "options": ["max-width", "sm:, md:, lg:", "desktop:, tablet:, mobile:", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Tailwind CSSda elementlar orasidagi masofani qanday belgilaymiz?",
+        "options": ["space-x-{value}", "gap-{value}", "m-{value}", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Tailwind CSSda maxsus ranglarni qanday belgilaymiz?",
+        "options": ["theme.extend.colors", "custom-colors", "new-colors", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda qanday qilib qattiq gradient qo'shamiz?",
+        "options": ["bg-gradient", "bg-gradient-to-r", "gradient: bg", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Tailwind CSSda qaysi xususiyatlar uchun 'flex' prefiksidan foydalaniladi?",
+        "options": ["Fleks tasnifi", "Fleks o'lchov", "Fleks taqsimoti", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Tailwind CSSda trench xususiyatini qanday yozamiz?",
+        "options": ["truncate", "text-truncate", "text-ellipsis", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda visual obstructionlarni qanday bartaraf etamiz?",
+        "options": ["overflow-hidden", "overflow-visible", "overflow-scroll", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwindda maksimum kenglik qanday aniqlanadi?",
+        "options": ["max-w-{size}", "w-max", "width-max", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwindda qatorlarni qanday ajratamiz?",
+        "options": ["space-y-{value}", "gap-y-{value}", "row-{value}", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda gradientlar yordamida tasvirlar yaratish mumkinmi?",
+        "options": ["Ha, bu mumkin", "Yo'q, mumkin emas", "Faqat CSS orqali", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda margin to'plamlari qanday beriladi?",
+        "options": ["m-{value}", "margin-{value}", "mg-{value}", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda qaysi xususiyat dan element bobini belgilaydi?",
+        "options": ["aspect-ratio", "ratio", "aspect", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda shaffoflikni qanday belgilaymiz?",
+        "options": ["opacity-{number}", "transparency-{number}", "transparent-{number}", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda maxsus xususiyatni qanday qo'shamiz?",
+        "options": ["theme: { extend: {} }", "extend: { }", "add: { }", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda bitta elementning ko'rinishi qanday menyuga ega?",
+        "options": ["submenu", "dialog", "dropdown", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Tailwind CSS platformalararo ochiq kod dasturlar uchun mo'ljallanganmi?",
+        "options": ["Ha", "Yo'q", "Faqat veb saytlar uchun", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind da bitta elementning uzunligini qanday aniqlanadi?",
+        "options": ["w-{size}", "length-max", "max-length", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda yasash mumkin bo'lgan murakkab elementlar orasida qaysi usullar mavjud?",
+        "options": ["kompleks xususiyatlar", "maxsus javascript", "CSSni ko'chirish", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda maxsus parametrlardan qanday foydalanamiz?",
+        "options": ["theme: { parametres: {} }", "template: { }", "mixin: { }", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda asosan quyidagi xususiyatlar qanday aniqlanadi?",
+        "options": ["background-color, width, height", "text, margin, padding", "border, shadow, hover", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Tailwind CSS fontlarni qanday qo'shamiz?",
+        "options": ["font-{name}", "text-{name}", "font-family-{name}", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda font o'lchamini qanday o'zgartiramiz?",
+        "options": ["text-{size}", "font-size-{size}", "text-size-{size}", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda maxsus animatsiyalardan qanday foydalanamiz?",
+        "options": ["@keyframes", "animate-{name}", "animation-{name}", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Tailwind CSSda qaysi xususiyat `responsive` uchun qo'llaniladi?",
+        "options": ["container", "max-w-full", "font-sizes", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda tooltipni qanday qo'shamiz?",
+        "options": ["tooltip", "title", "data-tooltip", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Tailwind CSSning 'enabled' holatini qanday ko'rsatamiz?",
+        "options": ["enabled:bg-blue-500", "bg-blue-500:enabled", "bg-blue-500[enabled]", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda ranglarni qanday belgilaymiz?",
+        "options": ["'colors' o'zgaruvchisi", "'theme'", "'palette'", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Tailwind CSSda shadow qanday qo'shiladi?",
+        "options": ["shadow", "shadow-{size}", "box-shadow", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Tailwind CSSda hover ta'sirini qanday qo'shamiz?",
+        "options": ["hover:bg-blue-500", "hover-blue-500", "bg-hover-blue-500", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwindda yuklash ekranini qanday qo'shamiz?",
+        "options": ["loader", "loading", "animate-spin", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Tailwind CSSda to'g'ridan-to'g'ri hissa qo'shish mumkinmi?",
+        "options": ["Ha", "Yo'q", "Faqat o'zgartirish mumkin", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda button yaratish uchun qaysi yuqorida ko'rsatilgan xususiyatlardan foydalanasiz?",
+        "options": ["bg-blue-500 text-white p-2 rounded", "button: bg-blue-500", "btn: blue-500", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda `cursor-pointer` xususiyati nima qiladi?",
+        "options": ["Ko'rsatkichni almashtiradi", "Boshqa rangga o'zgartiradi", "Naglatadi", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda border-width qanday yoziladi?",
+        "options": ["border-{size}", "border-width-{size}", "border-radius-{size}", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda paddingni qanday belgilaymiz?",
+        "options": ["p-{size}", "padding-{size}", "pad-{size}", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda hover xususiyatini qancha marta belgilash mumkin?",
+        "options": ["50", "100", "10", "none"],
+        "answer": 3
+    },
+    {
+        "question": "Tailwind CSSda qanday qilib elementlar orasida masofani belgilash mumkin?",
+        "options": ["space-x-{value}", "gaps-{value}", "gap-{value}", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda gradientlarni qanday qo'shishga imkon beradigan xususiyat? ",
+        "options": ["bg-gradient-{direction}", "gradient: { }", "bg-gradient-to-r", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Tailwind CSSda joylashuv xususiyatlari qanday yoziladi?",
+        "options": ["relative", "absolute", "fixed", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Tailwind CSSda animatsiyalarni qanday tokiy xususiyat bilan qo'shamiz?",
+        "options": ["animate-spin", "transition-all", "animate-all", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda hissoning ortiqcha kengligini qanday aniqlaymiz?",
+        "options": ["w-full", "w-auto", "max-w-full", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda ranglar qanday ko'rsatiladi?",
+        "options": ["bg-red-500", "font-red-500", "text-red-500", " barcha"],
+        "answer": 3
+    },
+    {
+        "question": "Tailwind CSSda transition qanday yoziladi?",
+        "options": ["transition-quantity", "transition-all", "transition-both", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Tailwind CSSda o'lchamlarni belgilash uchun qaysi kalitlar ishlatiladi?",
+        "options": ["max-w, w, min-w", "float, flex, clear", "dir, max-dir, min-dir", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda ranglar va shaffoflikni qanday ko'rsatamiz?",
+        "options": ["bg-gray-500 opacity-50", "bg-opacity-50 gray-500", "bg-light-opacity-50", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda zarb aniqlash uchun qaysi kalit ishlatiladi?",
+        "options": ["shadow", "z-depth", "z-index", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Tailwind CSSda hover kuchaytirilishi uchun qanday qulayliklardan foydalanamiz?",
+        "options": ["hover:bg-opacity-100", "hover:bg", "hover", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda hover ishlashini qanday belgilaymiz?",
+        "options": ["hover:bg-color", "hover:bg-{color}", "hover-color: {color}", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Tailwind CSSda maxsus borderlarni qanday belgilaymiz?",
+        "options": ["border-{color}", "border-color", "border:{color}", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Tailwind CSSda qaysi xususiyatlar uchun 'leading' prefiksidan foydalaniladi?",
+        "options": ["Qator oralig'i", "Qator uzunligi", "Qator pozitsiyasi", "none"],
+        "answer": 0
+    }
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+let timer;
+const timeLimit = 20;
+const wrongAnswers = []; // Xato berilgan savollar uchun ro'yxat
+
+function loadQuiz() {
+    const quizContainer = document.getElementById('quiz');
+    const timerElem = document.getElementById('timer');
+    quizContainer.innerHTML = '';
+    timerElem.innerHTML = `20 soniya qoldi!`;
+
+    const q = quizQuestions[currentQuestionIndex];
+
+    const questionElem = document.createElement('div');
+    questionElem.classList.add('question');
+    questionElem.innerHTML = `<p>${currentQuestionIndex + 1}. ${q.question}</p>`;
+
+    q.options.forEach((option, i) => {
+        questionElem.innerHTML += `
+            <label>
+                <input type="radio" name="question${currentQuestionIndex}" value="${i}" onchange="checkAnswer(this)"> ${option}
+            </label><br>
+        `;
+    });
+
+    quizContainer.appendChild(questionElem);
+
+    startTimer();
+}
+
+function startTimer() {
+    let timeRemaining = timeLimit;
+    const timerElem = document.getElementById('timer');
+
+    timer = setInterval(() => {
+        timeRemaining--;
+        timerElem.innerHTML = `${timeRemaining} soniya qoldi!`;
+
+        if (timeRemaining <= 0) {
+            clearInterval(timer);
+            moveToNextQuestion();  // Vaqt tugaganida keyingi savolga o'tish
+        }
+    }, 1000);
+}
+
+function checkAnswer(selectedOption) {
+    clearInterval(timer); // Timerni to'xtatish
+    const q = quizQuestions[currentQuestionIndex];
+
+    // Javobni tekshirish
+    if (parseInt(selectedOption.value) === q.answer) {
+        score++;
+    } else {
+        wrongAnswers.push(currentQuestionIndex); // Xato javob berilgan savol indeksini saqlash
+    }
+
+    moveToNextQuestion(); // Keyingi savolga o'ting
+}
+
+function moveToNextQuestion() {
+    if (currentQuestionIndex < quizQuestions.length - 1) {
+        currentQuestionIndex++;
+        loadQuiz();  // Yangi savolni yuklash
+    } else {
+        showResults(); // Savollar tugadi, natijalarni ko'rsatish
+    }
+}
+
+function showResults() {
+    clearInterval(timer);
+    const resultElem = document.getElementById('result');
+    let resultHTML = `<h2>Natijalar</h2><p>Siz ${score} ta savolga to'g'ri javob berdingiz!</p>`;
+
+    if (wrongAnswers.length > 0) {
+        resultHTML += "<h3>Xato berilgan savollar:</h3>";
+        wrongAnswers.forEach(index => {
+            const question = quizQuestions[index];
+            resultHTML += `<p>${index + 1}. ${question.question} <br> To'g'ri javob: ${question.options[question.answer]}</p>`;
+        });
+    }
+
+    resultElem.innerHTML = resultHTML;
+}
+
+document.getElementById('submit').addEventListener('click', showResults);
+
+loadQuiz();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .question {
+            margin: 10px 0;
+        }
+        button {
+            margin-top: 20px;
+        }
+        .timer {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<h1>CSS Test 42 ta</h1>
+
+<div id="quiz">
+    <!-- Savollar joylanadi -->
+</div>
+
+<div id="timer" class="timer">20 soniya qoldi!</div>
+<div>
+    <button id="submit">Natijani ko'rsatish</button>
+</div>
+<div id="result"></div>
+
+<script>
+const quizQuestions = [
+    {
+        question: "CSS nimani anglatadi?",
+        options: ["Cascading Style Sheets", "Computer Style Sheets", "Cascading Script Sheets", "Color and Style Sheets"],
+        answer: 0
+    },
+    {
+        question: "CSS qaysi tegda qo'llaniladi?",
+        options: ["&lt;style&gt;", "&lt;script&gt;", "&lt;css&gt;", "&lt;link&gt;"],
+        answer: 0
+    },
+    {
+        question: "Qaysi atribut CSS orqali matn rangini o'zgartirish uchun ishlatiladi?",
+        options: ["color", "text-color", "font-color", "background-color"],
+        answer: 0
+    },
+    {
+        question: "Qaysi birlik CSSda kenglikni belgilashda ishlatiladi?",
+        options: ["cm", "px", "mm", "km"],
+        answer: 1
+    },
+    {
+        question: "CSS da qanday selektor elementning ID-sini tanlaydi?",
+        options: [".id", "#id", "id", "element"],
+        answer: 1
+    },
+    {
+        question: "Qaysi CSS qoidasi qizil rangni belgilash uchun ishlatiladi?",
+        options: ["color: red;", "background-color: red;", "text-color: red;", "font-color: red;"],
+        answer: 0
+    },
+    {
+        question: "Qaysi CSS qoidasi fontni o'zgartirish uchun ishlatiladi?",
+        options: ["font-family", "font-type", "font-style", "font-size"],
+        answer: 0
+    },
+    {
+        question: "Qanday qilib CSS orqali matnning o'lchamini o'zgartirasiz?",
+        options: ["font-size", "text-size", "font-style", "text-width"],
+        answer: 0
+    },
+    {
+        question: "CSSda margin va padding orasidagi farq nima?",
+        options: ["Margin elementlar orasidagi bo'shliq, padding esa ichidagi bo'shliq", "Padding elementlar orasidagi bo'shliq, margin esa ichidagi bo'shliq", "Margin faqat bo'shliqni belgilaydi, padding esa rangni", "Hech qanday farq yo'q"],
+        answer: 0
+    },
+    {
+        question: "CSSni HTML hujjatiga qanday qo'shasiz?",
+        options: ["Qo'shish orqali", "&lt;style&gt; ichida", "&lt;link&gt; orqali", "Barchasi"],
+        answer: 3
+    },
+    {
+        question: "Qaysi CSS qoidasi tugmachaning colorini o'zgartirishi mumkin?",
+        options: ["color: blue;", "background-color: blue;", "text-color: blue;", "border-color: blue;"],
+        answer: 0
+    },
+    {
+        question: "Qaysi CSS xususiyati blok elementlarida tavsiflanadi?",
+        options: ["display", "flexbox", "float", "clear"],
+        answer: 0
+    },
+    {
+        question: "Flexboxdan foydalanish uchun qaysi xususiyatni qo'llaysiz?",
+        options: ["display: flex;", "flex: display;", "flexbox: true;", "display: inline;"],
+        answer: 0
+    },
+    {
+        question: "Qaysi CSS xususiyati ob'ektlarning yashirinligini ta'minlaydi?",
+        options: ["hide", "visibility", "display: none;", "invisible"],
+        answer: 2
+    },
+    {
+        question: "Qaysi xususiyat CSSda fon rangini belgilashda ishlatiladi?",
+        options: ["background", "bg-color", "color", "font-color"],
+        answer: 0
+    },
+    {
+        question: "CSSda qaysi birlik bo'shliqni belgilaydi?",
+        options: ["px", "%", "em", "Barchasi"],
+        answer: 3
+    },
+    {
+        question: "CSSda hover effektini yaratish uchun qaysi xususiyatdan foydalanamiz?",
+        options: ["selector:hover", "selector.active", "selector:focus", "selector.click"],
+        answer: 0
+    },
+    {
+        question: "Qaysi qoida CSSda 'transition' qismini belgilaydi?",
+        options: ["transition: all 0.5s;", "animate: transition 0.5s;", "duration: 0.5s;", "Barchasi"],
+        answer: 0
+    },
+    {
+        question: "CSSda biror elementni markazga joylashtirish uchun qaysi xususiyat ishlatiladi?",
+        options: ["align", "center", "justify", "margin: auto;"],
+        answer: 3
+    },
+    {
+        question: "Qaysi CSS xususiyati shakllanishni belgilaydi?",
+        options: ["border-radius", "shape", "border-style", "style"],
+        answer: 0
+    },
+    {
+        question: "Qanday qilib CSS yordamida fontning shriftini o'zgartirasiz?",
+        options: ["font-family", "font-type", "font-style", "style"],
+        answer: 0
+    },
+    {
+        question: "Qaysi xususiyat CSS da fonni o'zgartirishda ishlatiladi?",
+        options: ["background", "color", "font", "sheet"],
+        answer: 0
+    },
+    {
+        question: "CSSda qavslar qanday ishlatiladi?",
+        options: ["[{ }]", "[{ }]", "({ })", "{{ }}"],
+        answer: 0
+    },
+    {
+        question: "CSSda tag bilan raqamlash uchun qaysi usulni qo'llaysiz?",
+        options: ["list-style", "numbered-list", "point-list", "list-number"],
+        answer: 0
+    },
+    {
+        question: "CSS da yurt buyruqlarini qanday yozamiz?",
+        options: ["!important", "!style", "!define", "!set"],
+        answer: 0
+    },
+    {
+        question: "Qaysi xususiyat CSSda shriftni qalin qilish uchun ishlatiladi?",
+        options: ["font-weight", "font-size", "font-style", "font-variant"],
+        answer: 0
+    },
+    {
+        question: "Qaysi xususiyat matnni markazlashtirish uchun ishlatiladi?",
+        options: ["text-align", "align", "center", "margin"],
+        answer: 0
+    },
+    {
+        question: "CSSda ko'rsatkichli elementlarni qanday birlashtirasiz?",
+        options: ["color merge", "combine", "group", "grouping"],
+        answer: 0
+    },
+    {
+        question: "CSSda animatsiyalarni yaratish uchun qaysi atamalar qo'llanadi?",
+        options: ["animation", "animate", "transition", "keyframe"],
+        answer: 3
+    },
+    {
+        question: "CSSda maxsus class ni belgilash uchun qanday yozasiz?",
+        options: [".classname", "#classname", "classname", "classname()"],
+        answer: 0
+    },
+    {
+        question: "CSSda biror elementni yashirish uchun qaysi qoida qo'llaniladi?",
+        options: ["display: none;", "visibility: hidden;", "opacity: 0;", "Barchasi"],
+        answer: 3
+    },
+    {
+        question: "Qaysi xususiyat CSS da o'lchamlarga mos keladi?",
+        options: ["width", "space", "length", "size"],
+        answer: 0
+    },
+    {
+        question: "CSSda xususiyatlarni biri joyiga boshqaradigan qaysi xususiyat mavjud?",
+        options: ["position", "lookup", "style", "border"],
+        answer: 0
+    },
+    {
+        question: "Qaysi xususiyat CSS da elementlarni yonma-yon joylashtirish uchun ishlatiladi?",
+        options: ["float", "align", "shift", "position"],
+        answer: 0
+    },
+    {
+        question: "CSSda biror elementni uslublashda qanday usuldan foydalanamiz?",
+        options: ["specificity", "style", "importance", "weight"],
+        answer: 0
+    },
+    {
+        question: "Qaysi selektorlar bir nechta elementlarni bir vaqtning o'zida topish uchun ishlatiladi?",
+        options: [".classname", "*", "+", ","],
+        answer: 3
+    },
+    {
+        question: "CSS ko'rsatkichlari ranglar bilan bog'liq?",
+        options: ["rgba", "color", "background", "Barchasi"],
+        answer: 0
+    },
+    {
+        question: "CSSda misol bo'lida rang o'zgartirish uchun qanday kod yozasiz?",
+        options: ["color: #ff0000;", "color = #ff0000;", "color : #ff0000;", "color : #ff;"],
+        answer: 0
+    },
+    {
+        question: "CSS da jadval elementlariga bo'ysunadi?",
+        options: ["table", "th", "td", "Barchasi"],
+        answer: 3
+    },
+    {
+        question: "CSS da fokusli effektni yaratish uchun qaerdan foydalanasiz?",
+        options: ["input:focus", "select:focus", "button:focus", "textarea:focus"],
+        answer: 0
+    },
+    {
+        question: "CSSda har bir so'zning hududi bo'shligini qanday belgilaysiz?",
+        options: ["word-spacing", "text-spacing", "space", "line-height"],
+        answer: 0
+    },
+    {
+        question: "CSSda paragraflar orasidagi bo'shliqlarni qanday belgilaysiz?",
+        options: ["line-height", "margin", "padding", "text-space"],
+        answer: 1
+    }
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+let timer;
+const timeLimit = 20;
+const wrongAnswers = []; // Xato berilgan savollar uchun ro'yxat
+
+function loadQuiz() {
+    const quizContainer = document.getElementById('quiz');
+    const timerElem = document.getElementById('timer');
+    quizContainer.innerHTML = '';
+    timerElem.innerHTML = `20 soniya qoldi!`;
+
+    const q = quizQuestions[currentQuestionIndex];
+
+    const questionElem = document.createElement('div');
+    questionElem.classList.add('question');
+    questionElem.innerHTML = `<p>${currentQuestionIndex + 1}. ${q.question}</p>`;
+
+    q.options.forEach((option, i) => {
+        questionElem.innerHTML += `
+            <label>
+                <input type="radio" name="question${currentQuestionIndex}" value="${i}" onchange="checkAnswer(this)"> ${option}
+            </label><br>
+        `;
+    });
+
+    quizContainer.appendChild(questionElem);
+
+    startTimer();
+}
+
+function startTimer() {
+    let timeRemaining = timeLimit;
+    const timerElem = document.getElementById('timer');
+
+    timer = setInterval(() => {
+        timeRemaining--;
+        timerElem.innerHTML = `${timeRemaining} soniya qoldi!`;
+
+        if (timeRemaining <= 0) {
+            clearInterval(timer);
+            moveToNextQuestion();  // Vaqt tugaganida keyingi savolga o'tish
+        }
+    }, 1000);
+}
+
+function checkAnswer(selectedOption) {
+    clearInterval(timer); // Timerni to'xtatish
+    const q = quizQuestions[currentQuestionIndex];
+
+    // Javobni tekshirish
+    if (parseInt(selectedOption.value) === q.answer) {
+        score++;
+    } else {
+        wrongAnswers.push(currentQuestionIndex); // Xato javob berilgan savol indeksini saqlash
+    }
+
+    moveToNextQuestion(); // Keyingi savolga o'ting
+}
+
+function moveToNextQuestion() {
+    if (currentQuestionIndex < quizQuestions.length - 1) {
+        currentQuestionIndex++;
+        loadQuiz();  // Yangi savolni yuklash
+    } else {
+        showResults(); // Savollar tugadi, natijalarni ko'rsatish
+    }
+}
+
+function showResults() {
+    clearInterval(timer);
+    const resultElem = document.getElementById('result');
+    let resultHTML = `<h2>Natijalar</h2><p>Siz ${score} ta savolga to'g'ri javob berdingiz!</p>`;
+
+    if (wrongAnswers.length > 0) {
+        resultHTML += "<h3>Xato berilgan savollar:</h3>";
+        wrongAnswers.forEach(index => {
+            const question = quizQuestions[index];
+            resultHTML += `<p>${index + 1}. ${question.question} <br> To'g'ri javob: ${question.options[question.answer]}</p>`;
+        });
+    }
+
+    resultElem.innerHTML = resultHTML;
+}
+
+document.getElementById('submit').addEventListener('click', showResults);
+
+loadQuiz();
+</script>
+
+</body>
+</html>

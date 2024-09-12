@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .question {
+            margin: 10px 0;
+        }
+        button {
+            margin-top: 20px;
+        }
+        .timer {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Bootstrap Test 60 ta</h1>
+
+<div id="quiz">
+    <!-- Savollar joylanadi -->
+</div>
+
+<div id="timer" class="timer">20 soniya qoldi!</div>
+<div>
+    <button id="submit">Natijani ko'rsatish</button>
+</div>
+<div id="result"></div>
+
+<script>
+const quizQuestions = [
+    {
+        "question": "Bootstrap nimani anglatadi?",
+        "options": ["CSS kutubxonasi", "JavaScript kutubxonasi", "HTML texnologiyasi", "Web asosiy formatlari"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrap haqida qaysi ma'lumot to'g'ri?",
+        "options": ["To'g'ri CSS ni faqat HTMLga qo'shadi", "O'zgaruvchilar va mixinlarni taqdim etadi", "Umuman JavaScriptdan foydalanmaydi", "Faqat mobil qurilmalar uchun mo'ljallangan"],
+        "answer": 1
+    },
+    {
+        "question": "Bootstrap qaysi texnologiyalarni qo'llaydi?",
+        "options": ["HTML, CSS, JavaScript", "HTML, PHP, CSS", "CSS, Python", "HTML, Java"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrap CSS-ni qanday import qilasiz?",
+        "options": ["&lt;link rel='stylesheet' href='bootstrap.css'&gt;", "&lt;script src='bootstrap.js'&gt;", "&lt;link rel='stylesheet' href='bootstrap.css'&gt;", "&lt;style&gt;@import 'bootstrap.css';&lt;/style&gt;"],
+        "answer": 0
+    },
+    {
+        "question": "Qaysi Bootstrap sinfi tugmani yaratadi?",
+        "options": ["btn", "button", "link", "btn-default"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda qanday d-md-class uchun ishlatiladi?",
+        "options": ["Katta ekranlar uchun", "Mobil qurilmalar uchun", "Ovoz chiqarish uchun", "Barcha olchovlar uchun"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrap grid tizimi qanday qurilgan?",
+        "options": ["12 kolonka", "10 kolonka", "8 kolonka", "16 kolonka"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda qaysi elementlar karta ko'rinishida mo'ljallaging?",
+        "options": ["cards", "containers", "tables", "divs"],
+        "answer": 0
+    },
+    {
+        "question": "Qanday qilib Bootstrapda nav yaratishni boshlaysiz?",
+        "options": ["&lt;nav&gt;", "&lt;navigation&gt;", "&lt;menu&gt;", "&lt;navbar&gt;"],
+        "answer": 3
+    },
+    {
+        "question": "Qaysi sinflar Bootstrapda tugma rangini o'zgartiradi?",
+        "options": ["btn-danger", "btn-custom", "btn-primary", "btn-error"],
+        "answer": 2
+    },
+    {
+        "question": "Bootstrapda parallar qaysi sinfni ko'rsatadi?",
+        "options": ["parallax", "bg-parallax", "bg-image", "none"],
+        "answer": 3
+    },
+    {
+        "question": "Bootstrapda toifalar qanday ko'rinishda ishlatiladi?",
+        "options": ["jumbotron", "row", "btn", "container"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda xususiyatlarni ko'rsatish uchun qanday ishlatamiz?",
+        "options": ["class", "style", "attribute", "id"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda shakllar qanday ko'rinishda ishlatiladi?",
+        "options": ["form-control", "input-class", "field-class", "form-input"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda nav ner bor?",
+        "options": ["nav", "navbar", "menu", "navigation"],
+        "answer": 1
+    },
+    {
+        "question": "Qanday qilib Bootstrapda tugmani o'lchamini belgilaysiz?",
+        "options": ["btn-lg", "large-btn", "big-btn", "btn-large"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapning qaysi sinfida porloq fon rangini berasiz?",
+        "options": ["bg-light", "bg-primary", "bg-white", "bg-dark"],
+        "answer": 1
+    },
+    {
+        "question": "Bootstrapda jumbotron nima?",
+        "options": ["Katta matn bloki uchun", "Button uchun", "Xulq uchun", "Hech biri"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda jadvallarni qanday ishlatish mumkin?",
+        "options": ["table", "tab", "data", "div"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda CSS sinflarini qanday qo'llaymiz?",
+        "options": ["example", "demo", "sample", "demo-class"],
+        "answer": 2
+    },
+    {
+        "question": "Bootstrapda responsive tasvirlar uchun qaysi sinflar ishlatiladi?",
+        "options": ["img-responsive", "img-fluid", "image", "responsive-image"],
+        "answer": 1
+    },
+    {
+        "question": "Bootstrapda modal oynani qanday yaratamiz?",
+        "options": ["modal", "dialog", "popup", "popover"],
+        "answer": 0
+    },
+    {
+        "question": "Qanday qilib Bootstrapda forma ikonkalarini ishlatamiz?",
+        "options": ["&lt;i&gt;", "&lt;icon&gt;", "&lt;svg&gt;", "&lt;image&gt;"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda oqitarli tugmalarni qanday yaratamiz?",
+        "options": ["btn-outline", "btn-transparent", "btn-clear", "btn-white"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda responsive holatlarni belgilash uchun qaysi prefixlar mavjud?",
+        "options": ["sm, md, lg", "xs, sm, md", "xl, lg, md, sm", "barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda qaysi sinf flex o'zgaruvchilarni qo'llaydi?",
+        "options": ["d-flex", "flex", "display-flex", "display"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda testlar qanday yaratishini qay tarzda ko'rsatish kerak?",
+        "options": ["text-inputs", "form-text", "input-text", "form-control"],
+        "answer": 3
+    },
+    {
+        "question": "Bootstrapda xususiyatlarning bir nechtasini birlashtirish qanday ko'rsatiladi?",
+        "options": ["class1 class2", "class1,class2", "class1+class2", "class1&class2"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda toastlar qanday ishlatiladi?",
+        "options": ["toast", "alert", "notification", "message"],
+        "answer": 0
+    },
+    {
+        "question": "Qanday qilib Bootstrap navigatsiya barini yaratamiz?",
+        "options": ["&lt;nav class='navbar'&gt;", "&lt;menu&gt;", "&lt;navigation&gt;", "&lt;nav-bar&gt;"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda bitta oqituvchi brend rangini qanday yozamiz?",
+        "options": ["bg-success", "bg-alert", "bg-primary", "bg-notification"],
+        "answer": 2
+    },
+    {
+        "question": "Bootstrapda responsiv dizaynni ta'minlash uchun qaysi xususiyatdan foydalanamiz?",
+        "options": ["viewport", "media queries", "grid", "flex"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda qaysi yordamchi xususiyatlar mavjud?",
+        "options": ["tooltip", "help", "assist", "support"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda qo'llanadigan modal shaklini qanday yaratamiz?",
+        "options": ["&lt;div class='modal'&gt;", "&lt;dialog&gt;", "&lt;pop-up&gt;", "&lt;modal&gt;"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda qaysi kod harakat qilish uchun ishlatiladi?",
+        "options": ["data-toggle='collapse'", "data-slide='toggle'", "data-show='true'", "data-collapse='open'"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda joriy uslubni qanday qo'llaymiz?",
+        "options": ["&lt;link rel='stylesheet' href='bootstrap.min.css'&gt;", "&lt;script src='bootstrap.min.js'&gt;", "&lt;style&gt;@import 'bootstrap.min.css';&lt;/style&gt;", "&lt;link src='bootstrap.css'&gt;"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda vaziyatni qanday ko'rsatamiz?",
+        "options": ["alert", "notifier", "trigger", "status"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda qaysi tugma uslublashda asosiy rangni belgilaydi?",
+        "options": ["btn-primary", "btn-default", "btn-basic", "btn-standard"],
+        "answer": 0
+    },
+    {
+        "question": "Qaysi kod bootstrapda inputlarni yaratadi?",
+        "options": ["&lt;input class='form-control'&gt;", "&lt;input class='input'&gt;", "&lt;form class='input'&gt;", "&lt;form class='form'&gt;"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda qaysi sinf elementlar ustida tashqi bo'shliqni ta'minlaydi?",
+        "options": ["margin", "padding", "gutter", "space"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda qanday qilib font rangini o'zgartiramiz?",
+        "options": ["text-primary", "font-center", "font-control", "color"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda nav-bar sinfi nima?",
+        "options": ["Tugmalar", "Ko'rsatkichlar", "Shakllar", "Navigatsiya"],
+        "answer": 3
+    },
+    {
+        "question": "Bootstrapda flex layout uchun qaysi sinf foydalaniladi?",
+        "options": ["flex-container", "flex", "flex-row", "d-flex"],
+        "answer": 3
+    },
+    {
+        "question": "Bootstrapdan o'zgaruvchini qanday belgilaysiz?",
+        "options": ["--bs-primary", "--primary", "--bs-color", "--color"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrap qaysi tashkilot tomonidan yaratilgan?",
+        "options": ["Twitter", "Google", "Facebook", "Microsoft"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda shaklni yuborish uchun qanday tugma ishlatiladi?",
+        "options": ["btn-submit", "btn-send", "btn-primary", "btn"],
+        "answer": 2
+    },
+    {
+        "question": "Bootstrapda kimgacha to'qimalar hisobi qanday ko'rinishda ishlatiladi?",
+        "options": ["bu", "class", "flex", "padding"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda qaysi uslub elementining tagiga ortiqcha qoldiqqa olib keladi?",
+        "options": ["mt", "mb", "m", "mx"],
+        "answer": 1
+    },
+    {
+        "question": "Bootstrapda variantlar qanday yoziladi?",
+        "options": ["list", "items", "variant", "type"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda rejalashtirilgan o.ChangeEvent (kolonkalar) qanday ishlatiladi?",
+        "options": ["col", "flex", "gutter", "row"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda ko'rsatmalar qaysi sinf bilan ko'rsatiladi?",
+        "options": ["list-unstyled", "list-item", "list-class", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda javob beradigan sinfni qanday belgilaysiz?",
+        "options": ["card", "container", "hero", "row"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda tugmalarning qaysi rangli qolfai bor?",
+        "options": ["danger", "success", "primary", "secondary"],
+        "answer": 3
+    },
+    {
+        "question": "Bootstrapda tugmalarni qanday qilib guruhlash mumkin?",
+        "options": ["btn-group", "button-group", "group-btn", "btn-class"],
+        "answer": 1
+    },
+    {
+        "question": "Bootstrapda tugma urg'usi nechta?",
+        "options": ["focus", "hover", "toggle", "all"],
+        "answer": 1
+    },
+    {
+        "question": "Bootstrapda qaysi sinf yordamida xabarlar ko'rsatish mumkin?",
+        "options": ["alerts", "toast", "message", "notification"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda shakl qaysi sinf bilan belgilanishi kerak?",
+        "options": ["form-group", "input-class", "field-class", "form-control"],
+        "answer": 0
+    },
+    {
+        "question": "Bootstrapda tasvirni imkon qadar katta qilishingiz mumkinmi?",
+        "options": ["img-fluid", "img-large", "img-responsive", "image"],
+        "answer": 1
+    },
+    {
+        "question": "Bootstrapda navborlar qanday amal qiladi?",
+        "options": ["nested", "child", "parent", "sibling"],
+        "answer": 1
+    },
+    {
+        "question": "Bootstrapda qanday qilib ijtimoiy tugmachalar yaratishingiz mumkin?",
+        "options": ["btn-social", "btn-soc", "btn-network", "btn-connecting"],
+        "answer": 0
+    }
+];
+let currentQuestionIndex = 0;
+let score = 0;
+let timer;
+const timeLimit = 20;
+const wrongAnswers = []; // Xato berilgan savollar uchun ro'yxat
+
+function loadQuiz() {
+    const quizContainer = document.getElementById('quiz');
+    const timerElem = document.getElementById('timer');
+    quizContainer.innerHTML = '';
+    timerElem.innerHTML = `20 soniya qoldi!`;
+
+    const q = quizQuestions[currentQuestionIndex];
+
+    const questionElem = document.createElement('div');
+    questionElem.classList.add('question');
+    questionElem.innerHTML = `<p>${currentQuestionIndex + 1}. ${q.question}</p>`;
+
+    q.options.forEach((option, i) => {
+        questionElem.innerHTML += `
+            <label>
+                <input type="radio" name="question${currentQuestionIndex}" value="${i}" onchange="checkAnswer(this)"> ${option}
+            </label><br>
+        `;
+    });
+
+    quizContainer.appendChild(questionElem);
+
+    startTimer();
+}
+
+function startTimer() {
+    let timeRemaining = timeLimit;
+    const timerElem = document.getElementById('timer');
+
+    timer = setInterval(() => {
+        timeRemaining--;
+        timerElem.innerHTML = `${timeRemaining} soniya qoldi!`;
+
+        if (timeRemaining <= 0) {
+            clearInterval(timer);
+            moveToNextQuestion();  // Vaqt tugaganida keyingi savolga o'tish
+        }
+    }, 1000);
+}
+
+function checkAnswer(selectedOption) {
+    clearInterval(timer); // Timerni to'xtatish
+    const q = quizQuestions[currentQuestionIndex];
+
+    // Javobni tekshirish
+    if (parseInt(selectedOption.value) === q.answer) {
+        score++;
+    } else {
+        wrongAnswers.push(currentQuestionIndex); // Xato javob berilgan savol indeksini saqlash
+    }
+
+    moveToNextQuestion(); // Keyingi savolga o'ting
+}
+
+function moveToNextQuestion() {
+    if (currentQuestionIndex < quizQuestions.length - 1) {
+        currentQuestionIndex++;
+        loadQuiz();  // Yangi savolni yuklash
+    } else {
+        showResults(); // Savollar tugadi, natijalarni ko'rsatish
+    }
+}
+
+function showResults() {
+    clearInterval(timer);
+    const resultElem = document.getElementById('result');
+    let resultHTML = `<h2>Natijalar</h2><p>Siz ${score} ta savolga to'g'ri javob berdingiz!</p>`;
+
+    if (wrongAnswers.length > 0) {
+        resultHTML += "<h3>Xato berilgan savollar:</h3>";
+        wrongAnswers.forEach(index => {
+            const question = quizQuestions[index];
+            resultHTML += `<p>${index + 1}. ${question.question} <br> To'g'ri javob: ${question.options[question.answer]}</p>`;
+        });
+    }
+
+    resultElem.innerHTML = resultHTML;
+}
+
+document.getElementById('submit').addEventListener('click', showResults);
+
+loadQuiz();
+</script>
+
+</body>
+</html>

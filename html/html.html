@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .question {
+            margin: 10px 0;
+        }
+        button {
+            margin-top: 20px;
+        }
+        .timer {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<h1>HTML Test 33 ta</h1>
+
+<div id="quiz">
+    <!-- Savollar joylanadi -->
+</div>
+
+<div id="timer" class="timer">20 soniya qoldi!</div>
+<div>
+    <button id="submit">Natijani ko'rsatish</button>
+</div>
+<div id="result"></div>
+
+<script>
+const quizQuestions = [
+    {
+        question: "HTML nima?",
+        options: ["Hyper Text Markup Language", "Hypertext Transfer Protocol", "Hyperlink and Text Markup Language", "High-level Textual Markup Language"],
+        answer: 0
+    },
+    {
+        question: "HTML dasturlari qanday kengaytma bilan tugaydi?",
+        options: [".html", ".htm", ".xml", ".doc"],
+        answer: 0
+    },
+    {
+        question: "HTML-da qaysi teg matn ichida bog'ni yaratadi?",
+        options: ["&lt;link&gt;", "&lt;a&gt;", "&lt;href&gt;", "&lt;url&gt;"],
+        answer: 1
+    },
+    {
+        question: "Qaysi HTML tegi sahifada rasm qo'shadi?",
+        options: ["&lt;image&gt;", "&lt;src&gt;", "&lt;img&gt;", "&lt;pic&gt;"],
+        answer: 2
+    },
+    {
+        question: "HTMLning qolipli (block-level) tegi qaysi?",
+        options: ["&lt;span&gt;", "&lt;div&gt;", "&lt;p&gt;", "&lt;section&gt;"],
+        answer: 1
+    },
+    {
+        question: "Qo'shimcha stil qo'llash uchun qaysi atributdan foydalaniladi?",
+        options: ["style", "class", "css", "link"],
+        answer: 0
+    },
+    {
+        question: "H1 tegi qaysi turdagi matnni ifodalaydi?",
+        options: ["Katta sarlavha", "Kichik sarlavha", "Oddiy matn", "Yuqaridan tiklangan matn"],
+        answer: 0
+    },
+    {
+        question: "Qaysi teg HTML hujjatining boshini belgilaydi?",
+        options: ["&lt;html&gt;", "&lt;header&gt;", "&lt;head&gt;", "&lt;title&gt;"],
+        answer: 1
+    },
+    {
+        question: "Paragrafni belgilovchi teg qaysi?",
+        options: ["&lt;paragraph&gt;", "&lt;p&gt;", "&lt;div&gt;", "&lt;span&gt;"],
+        answer: 1
+    },
+    {
+        question: "Qaysi HTML tegi formani yaratadi?",
+        options: ["&lt;form&gt;", "&lt;input&gt;", "&lt;button&gt;", "&lt;field&gt;"],
+        answer: 0
+    },
+    {
+        question: "HTMLda qanday element &lt;li&gt; ichida bo'lishi mumkin?",
+        options: ["Matn", "&lt;ul&gt;", "&lt;ol&gt;", "Barchasi"],
+        answer: 3
+    },
+    {
+        question: "HTMLning in-line elementlari qanday?",
+        options: ["&lt;div&gt;, &lt;p&gt;", "&lt;span&gt;, &lt;a&gt;", "&lt;h1&gt;, &lt;h2&gt;", "&lt;footer&gt;, &lt;header&gt;"],
+        answer: 1
+    },
+    {
+        question: "HTMLda qaysi atribut qonuniy?",
+        options: ["href", "action", "method", "Barchasi"],
+        answer: 3
+    },
+    {
+        question: "HTMLda qaysi teg ustunlarda yordam berish uchun ishlatiladi?",
+        options: ["&lt;col&gt;", "&lt;span&gt;", "&lt;li&gt;", "&lt;table&gt;"],
+        answer: 0
+    },
+    {
+        question: "HTMLda qaysi usul manzilli orqali fayl yuklash uchun ishlatiladi?",
+        options: ["GET", "POST", "Barchasi", "QUERY"],
+        answer: 2
+    },
+    {
+        question: "Nima HTML markup tilidir?",
+        options: ["Mantiqiy qoidalar", "Sahifa tarkibini belgilash", "Dasturlash tili", "Barchasi"],
+        answer: 1
+    },
+    {
+        question: "Qaysi HTML tegi matnni sanashda foydalidir?",
+        options: ["&lt;wordcount&gt;", "&lt;count&gt;", "&lt;number&gt;", "&lt;b&gt;"],
+        answer: 0
+    },
+    {
+        question: "HTMLda atributlar qanday yoziladi?",
+        options: ["Tezlikda", "Kichik harflarda", "Foizda", "Kengaytirilgan"],
+        answer: 1
+    },
+    {
+        question: "HTML hujjati qanday boshlanadi?",
+        options: ["&lt;!DOCTYPE html&gt;", "&lt;html&gt;", "&lt;head&gt;", "&lt;title&gt;"],
+        answer: 0
+    },
+    {
+        question: "HTMLda rasm qo'shish uchun qaysi atribut zarur?",
+        options: ["src", "alt", "href", "title"],
+        answer: 0
+    },
+    {
+        question: "Qaysi HTML tegi tugmani yaratuvchi?",
+        options: ["&lt;text&gt;", "&lt;push&gt;", "&lt;button&gt;", "&lt;submit&gt;"],
+        answer: 2
+    },
+    {
+        question: "Hyperlinkni yaratishda qaysi teg ishlatiladi?",
+        options: ["&lt;link&gt;", "&lt;url&gt;", "&lt;a&gt;", "&lt;href&gt;"],
+        answer: 2
+    },
+    {
+        question: "HTML sahifasida egri link yaratish uchun qaysi atributdan foydalaniladi?",
+        options: ["source", "url", "href", "link"],
+        answer: 2
+    },
+    {
+        question: "HTMLda matnni italik qilish uchun qaysi tegdan foydalaniladi?",
+        options: ["&lt;i&gt;", "&lt;em&gt;", "&lt;italic&gt;", "&lt;strong&gt;"],
+        answer: 0
+    },
+    {
+        question: "Qaysi HTML elementi audio va video foydalanuvchilar bilan ishlashda yordam beradi?",
+        options: ["&lt;media&gt;", "&lt;video&gt;", "&lt;audio&gt;", "&lt;src&gt;"],
+        answer: 2
+    },
+    {
+        question: "Qaysi atribut HTMLda rusum va qiymat ko'rsatadi?",
+        options: ["style", "name", "type", "value"],
+        answer: 2
+    },
+    {
+        question: "Tugmani bosilganda harakat qilish uchun qaysi atributni ishlatamiz?",
+        options: ["onclick", "onsubmit", "action", "href"],
+        answer: 0
+    },
+    {
+        question: "Qo'shadigan rasm ko'rinishini ta'minlaydigan HTML elementi qanday?",
+        options: ["&lt;img&gt;", "&lt;picture&gt;", "&lt;image&gt;", "&lt;photo&gt;"],
+        answer: 0
+    },
+    {
+        question: "Qaysi teg biror sahifadagi turli oxirlar haqida eslatmalar yaratishi mumkin?",
+        options: ["&lt;figure&gt;", "&lt;img&gt;", "&lt;picture&gt;", "&lt;flag&gt;"],
+        answer: 0
+    },
+    {
+        question: "HTMLda sarlavhalar qaysi tartibda ko'rsatiladi?",
+        options: ["H1, H2, H3", "H3, H2, H1", "H2, H1, H3", "H1, H3, H2"],
+        answer: 0
+    },
+    {
+        question: "'DOCTYPE' nima?",
+        options: ["HTML hujjatini e'tirof etadigan kod", "HTMLning eski versiyalari", "HTMLning yalang'och ko'rinishi", "Teglar qoidasi"],
+        answer: 0
+    },
+    {
+        question: "Turli elementlar orasida ajratishga yordam beradigan tarmoqni qanday o'rnatamiz?",
+        options: ["style", "class", "div", "br"],
+        answer: 2
+    },
+    {
+        question: "Metamalumotlar qanday ishlatiladi?",
+        options: ["Sahifa infratuzilmasi uchun", "Sahifaning kengaytirilishi", "Sahifaning dasturlash tili", "Barchasi"],
+        answer: 0
+    }
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+let timer;
+const timeLimit = 20;
+const wrongAnswers = []; // Xato berilgan savollar uchun ro'yxat
+
+function loadQuiz() {
+    const quizContainer = document.getElementById('quiz');
+    const timerElem = document.getElementById('timer');
+    quizContainer.innerHTML = '';
+    timerElem.innerHTML = `20 soniya qoldi!`;
+
+    const q = quizQuestions[currentQuestionIndex];
+
+    const questionElem = document.createElement('div');
+    questionElem.classList.add('question');
+    questionElem.innerHTML = `<p>${currentQuestionIndex + 1}. ${q.question}</p>`;
+
+    q.options.forEach((option, i) => {
+        questionElem.innerHTML += `
+            <label>
+                <input type="radio" name="question${currentQuestionIndex}" value="${i}" onchange="checkAnswer(this)"> ${option}
+            </label><br>
+        `;
+    });
+
+    quizContainer.appendChild(questionElem);
+
+    startTimer();
+}
+
+function startTimer() {
+    let timeRemaining = timeLimit;
+    const timerElem = document.getElementById('timer');
+
+    timer = setInterval(() => {
+        timeRemaining--;
+        timerElem.innerHTML = `${timeRemaining} soniya qoldi!`;
+
+        if (timeRemaining <= 0) {
+            clearInterval(timer);
+            moveToNextQuestion();  // Vaqt tugaganida keyingi savolga o'tish
+        }
+    }, 1000);
+}
+
+function checkAnswer(selectedOption) {
+    clearInterval(timer); // Timerni to'xtatish
+    const q = quizQuestions[currentQuestionIndex];
+
+    // Javobni tekshirish
+    if (parseInt(selectedOption.value) === q.answer) {
+        score++;
+    } else {
+        wrongAnswers.push(currentQuestionIndex); // Xato javob berilgan savol indeksini saqlash
+    }
+
+    moveToNextQuestion(); // Keyingi savolga o'ting
+}
+
+function moveToNextQuestion() {
+    if (currentQuestionIndex < quizQuestions.length - 1) {
+        currentQuestionIndex++;
+        loadQuiz();  // Yangi savolni yuklash
+    } else {
+        showResults(); // Savollar tugadi, natijalarni ko'rsatish
+    }
+}
+
+function showResults() {
+    clearInterval(timer);
+    const resultElem = document.getElementById('result');
+    let resultHTML = `<h2>Natijalar</h2><p>Siz ${score} ta savolga to'g'ri javob berdingiz!</p>`;
+
+    if (wrongAnswers.length > 0) {
+        resultHTML += "<h3>Xato berilgan savollar:</h3>";
+        wrongAnswers.forEach(index => {
+            const question = quizQuestions[index];
+            resultHTML += `<p>${index + 1}. ${question.question} <br> To'g'ri javob: ${question.options[question.answer]}</p>`;
+        });
+    }
+
+    resultElem.innerHTML = resultHTML;
+}
+
+document.getElementById('submit').addEventListener('click', showResults);
+
+loadQuiz();
+</script>
+
+</body>
+</html>

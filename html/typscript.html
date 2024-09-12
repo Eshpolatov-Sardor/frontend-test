@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typescript Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .question {
+            margin: 10px 0;
+        }
+        button {
+            margin-top: 20px;
+        }
+        .timer {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Typescript Test 85 ta</h1>
+
+<div id="quiz">
+</div>
+
+<div id="timer" class="timer">20 soniya qoldi!</div>
+<div>
+    <button id="submit">Natijani ko'rsatish</button>
+</div>
+<div id="result"></div>
+
+<script>
+const quizQuestions = [
+    {
+        "question": "TypeScript nima?",
+        "options": ["JavaScriptning super to'plami", "Yangi dasturlash tili", "Java uchun kutubxona", "HTML formati"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptni kim yaratdi?",
+        "options": ["Microsoft", "Google", "Mozilla", "Apple"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScript ushbu qaysi tilda yozilgan?",
+        "options": ["JavaScript", "Java", "C#", "Python"],
+        "answer": 2
+    },
+    {
+        "question": "TypeScriptning asosiy maqsadi nima?",
+        "options": ["Katta kodni boshqarish", "Yangi dasturlash tillarini yaratish", "Web dasturlar yaratish", "HTML va CSSni optimallashtirish"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda qaytgan turlar qanday belgilanishi mumkin?",
+        "options": [": type", ": returnType", ": void", ": T"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda tur qanday e'lon qilinadi?",
+        "options": ["let type: Type", "var type: Type", "const type: Type", "all of the above"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda interfeystlar nima?",
+        "options": ["Ob'ektlar uchun shablonlar", "Qayta ishlatiladigan kod bloklari", "CSS klasslari", "Dokumentatsiya qoidalari"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda nullable turlar qanday ishlatiladi?",
+        "options": ["?type", "null", "type?", "barchasi to'g'ri"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda massivlar qanday e'lon qilinadi?",
+        "options": ["let arr: number[]", "let arr: Array<number>", "Barcha javoblar to'g'ri", "let arr: [number]"],
+        "answer": 2
+    },
+    {
+        "question": "TypeScriptda sifatlar qanday ifodalanadi?",
+        "options": ["class", "function", "type", "interface"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda asinxron funksiyalarni qanday belgilash mumkin?",
+        "options": ["async function", "await function", "promise function", "deferred function"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda generiklar nima?",
+        "options": ["Turlarni dinamik o'zgartirish", "Funktsiyalarni takroriy yozish", "Ularning turlarini o'z ichiga oladigan parametrlar", "Xatoliklarni tekshirish"],
+        "answer": 2
+    },
+    {
+        "question": "TypeScriptda enum qanday e'lon qilinadi?",
+        "options": ["enum Name {VALUE1, VALUE2}", "enum Name: {VALUE1, VALUE2}", "enum Name = (VALUE1, VALUE2)", "Barcha javoblar to'g'ri"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda xatolikni qanday tutasiz?",
+        "options": ["try-catch", "throw", "console.error", "barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda o'zgaruvchi turini qanday aniqlash mumkin?",
+        "options": ["typeof", "instanceof", "is", "barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda xususiyatlar qanday ishlatiladi?",
+        "options": ["class nomi", "constructor", "get/set", "barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "TypeScriptda Type xususiyati qanday belgilanishi mumkin?",
+        "options": ["type RType = Type", "RType: Type", "type RType as Type", "let RType: Type"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda qanday qilib interfeysni kengaytiramiz?",
+        "options": ["interface Child extends Parent", "interface Child: Parent", "interface Child (Parent)", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda ma'lumotni qanday qo'lga olish mumkin?",
+        "options": ["fetch", "XMLHttpRequest", "Axios", "Barcha javoblar to'g'ri"],
+        "answer": 3
+    },
+    {
+        "question": "TypeScriptda turlarni to'ldirish uchun qanday foydalanamiz?",
+        "options": ["Union turlari", "Intersection turlari", "Generic turlari", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "TypeScriptda nesnalarni yaratishda qanday foydalanamiz?",
+        "options": ["object", "new Object()", "let obj: {key: value}", "Barcha javoblar to'g'ri"],
+        "answer": 2
+    },
+    {
+        "question": "TypeScriptda obyektlarni qanday murakkab koddan ajratamiz?",
+        "options": ["Destructuring", "Spreading", "Cloning", "Barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda default eksport qanday ko'rinadi?",
+        "options": ["export default component", "export component", "default export = component", "export as default"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda qaerda aniqlangan o'zgaruvchilarning ko'rinishiga qanday nazorat qilishimiz mumkin?",
+        "options": ["strict", "noImplicitAny", "exactOptionalPropertyTypes", "barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "TypeScriptda qaysi turdagi funksiyalar ishlatiladi?",
+        "options": ["Turlar bilan belgilangan funksiyalar", "Void funksiyalar", "Jo'natilgan argumentlar bilan funksiyalar", "barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "TypeScriptda holat qanday ishlatiladi?",
+        "options": ["state = {key: value}", "let state: {key: value}", "const state = {} as State", "Barcha javoblar to'g'ri"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda hartalik turlari standarti nima?",
+        "options": ["Structured type system", "Nominal type system", "Logical type system", "Plural type system"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda foydalanuvchi tURLarini qanday namoyish etamiz?",
+        "options": ["interface", "type", "class", "barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "TypeScriptda tur e'lon qilishning umumiy usuli qanday?",
+        "options": ["type Name = {key: type}", "let Name: {key: type}", "const Name = {key: type}", "Barchasi to'g'ri emas"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda struktural muvofiqlik qanday tushuniladi?",
+        "options": ["Aynan bir xil bo'lishi shart emas", "Qayta yozilishi shart", "Aslida xatolik", "Sinf bo'lishi kerak"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda uzluksiz ob'ektlar qanday ishlatiladi?",
+        "options": ["ArrayList", "Tuple", "Class", "Interface"],
+        "answer": 3
+    },
+    {
+        "question": "TypeScriptda notatsiyadan foydalanish qanday ko'rinadi?",
+        "options": ["let array: Array<int>", "let array: int[]", "let array: int", "Barchasi"],
+        "answer": 1
+    },
+    {
+        "question": "TypeScriptda qaysi xususiyatlar har doim joriy bo'lishi kerak?",
+        "options": ["Required xususiyatlar", "Optional xususiyatlar", "Readonly xususiyatlar", "Static xususiyatlar"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda xususiyatlarni qanday yozamiz?",
+        "options": ["property: type", "property = value", "let property: type", "Barcha javoblar to'g'ri"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda qaysi metodlar darsni yaratadi?",
+        "options": ["constructor()", "init()", "create()", "build()"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda normativ odatlarni qo'llash qanday bo'ladi?",
+        "options": ["strictNullChecks", "noImplicitAny", "suppressImplicitAny", "Barchasi"],
+        "answer": 1
+    },
+    {
+        "question": "TypeScriptda JavaScript kodlarini qanday qilib ishlatamiz?",
+        "options": ["import", "require", "namespace", "Barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda o'zgaruvchi qanday ochiladi?",
+        "options": ["let varName: type", "const varName: type", "var varName: type", "Barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda yuklab olishni qanday amalga oshirish mumkin?",
+        "options": ["fetch", "axios", "XMLHttpRequest", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "TypeScriptda qanday qilib kiruvchi parametrlarni belgilaymiz?",
+        "options": ["function name(param: Type)", "function name(param: type[]) ", "function name(param: type)", "Barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda xatolikni qanday chqarish mumkin?",
+        "options": ["throw new Error()", "throw Exception", "if-else bo'yicha xato", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda funktsiya doiralarini qanday yozamiz?",
+        "options": ["function doira(radius: number): number", "function doira(radius: any): any", "function doira(radius): void", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptni qanday o'rnatish kerak?",
+        "options": ["npm install -g typescript", "yarn add typescript", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "TypeScriptda qaysi atribut yordamida API dan keluvchi ma'lumotlarni olish mumkin?",
+        "options": ["async/await", "then/catch", "Promise", "barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "TypeScriptda whyle loopni qanday belgilaymiz?",
+        "options": ["while (condition)", "do { .... } while(condition);", "for (let i = 0; condition)", "Barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda qanday qilib xatolik yasaladi?",
+        "options": ["throw error", "if error", "console.error", "alert"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda developer toolsni qayta qanday ishga tushirish mumkin?",
+        "options": ["Ctrl + Shift + I", "F12", "cmd + option + I", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "TypeScriptda qaysi mantiqiy operatorlar qo'llaniladi?",
+        "options": ["and(&&)", "or(||)", "not(!)", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "TypeScriptda kirish operatori qanday ko'rinadi?",
+        "options": ["a = b || c", "a = b && c", "a = !b", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda minimal versiya qaysi?",
+        "options": ["1.0", "2.0", "3.0", "4.0"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda ob'ektlarni yaratishda qaysi kalit so'z qo'llaniladi?",
+        "options": ["object", "let", "function", "class"],
+        "answer": 3
+    },
+    {
+        "question": "TypeScript imkoniyatlarini oshirish muhimmi?",
+        "options": ["Ha", "Yo'q", "Ular samarasiz", "qaramagan holda"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScript ning asosiy ustunligi qanday?",
+        "options": ["SOAP", "REST", "Uslublar", "Hisobga olinadigan ob'ektlar"],
+        "answer": 3
+    },
+    {
+        "question": "TypeScriptda eksport qilish usuli nima?",
+        "options": ["export", "module.exports", "exports", "Barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda xususiy holat nima?",
+        "options": ["Private xususiyatlar", "Xususiyatlarni ko'rsatish taxmin qilinmaydi", "Private metodlar", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "TypeScriptda xususiyatlar qanday belgilanishi mumkin?",
+        "options": ["?: Prop", "?+ Prop", "? : Prop", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda import qilinadigan fayllar qanday yoziladi?",
+        "options": ["import {functionName, variableName} from 'module'", "require('module')", "import require from 'module'", "Barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda qanday qilib interfeys yaratamiz?",
+        "options": ["interface IName { property: type }", "type IName = { property: type }", "class IName { property: type }", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda faylni qanday o'qish mumkin?",
+        "options": ["fs.readFileSync()", "fs.read()", "fs.fileSync()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda qaysi metodlarni ishlatish mumkin?",
+        "options": ["parseInt()", "parseFloat()", "toString()", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "TypeScriptda preprocessor sifatida qo'llanilishi mumkinmi?",
+        "options": ["Ha", "Yo'q", "Fikrda emas", "Yana bir kutubxona"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda default qiymatlar qanday belgilanishi mumkin?",
+        "options": ["function functionName(param: type = defaultValue)", "let param: type = defaultValue", "const param: type = defaultValue", "default param: type"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda qaysi murakkab ob'ektlar yaratiladi?",
+        "options": ["Map", "Set", "WeakMap", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "TypeScriptda immutables dan foydalanish mumkinmi?",
+        "options": ["Ha", "Yo'q", "Barchasi kaluar", "Arı arıqlashga"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda qaysi holatlarda foydali hisoblanadi?",
+        "options": ["Katta kod bilan ishlash", "Mavjud kodni o'zgartirishda", "Uyaklarda ishlash", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "TypeScript qanday qilib tur yuqoridan pastga o'rnashGAN trend bo'chadi?",
+        "options": ["Type inference", "Type casting", "Type manipulation", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda optional chainingdan foydalanadigan holatlar qanday?",
+        "options": ["?.", "?.Message", "null", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda State mantiqlari qanday o'rnashadi?",
+        "options": ["nomi talablari", "sarlavhalar", "tik o'rganish", "Barchasi"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda golysy xususiyatlar qanday belgilanishi mumkin?",
+        "options": ["typeVNode", "typeVariable", "declare findingType", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda javobrni qanday o'qishimiz mumkin?",
+        "options": ["function readAnswer(): string()", "async readAnswer(): Promise<string>", "returnAnswer(): void", "none"],
+        "answer": 1
+    },
+    {
+        "question": "TypeScriptni qanday qilib tasdiqlash mumkin?",
+        "options": ["tsc --build", "tsc -w", "tsc --isolatedModules", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda bo'sh tur turlari qachon yoqiladi?",
+        "options": ["nonNullAssertion", "strictNullChecks", "exactOptionalPropertyTypes", "none"],
+        "answer": 1
+    },
+    {
+        "question": "TypeScriptda gulangni qanday belgilab qo'yish mumkin?",
+        "options": ["initialize: string", "setData: 'string'", "resetData: () => void", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda qaysi zaruriy VLANlar mavjud?",
+        "options": ["Load balancer", "Network route tables", "Bridging", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda dastur o'qituvchilarni qanday qilib o'qitaylik?",
+        "options": ["Console.check()", "Breadcrumb.exists()", "Log class", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda qo'llanadigan ma'lumotlar qanday bo'ladi?",
+        "options": ["Union", "Reference", "Import", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScript faoliyati qanday talablarga asoslanadi?",
+        "options": ["Types", "Packages", "Classes", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda sharq xarakterlarining censurlaridan foydalaniladimi?",
+        "options": ["Ha", "Yo'q", "Barchasi", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda boshi quyidan yuqoriga qanday aniqlanadi?",
+        "options": ["State var: number", "State = null", "State as string", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda targetni ommalashtirish qo'l barmokdan o'n tashlashga tengmi?",
+        "options": ["u === 1", "x * y / z", "innore quan to", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda static bo'sh joy nimani anglatadi?",
+        "options": ["Cucumber.location", "Can return", "Is available", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda do'konlar (directory) nimani anglatadi?",
+        "options": ["odamlar", "discalet", "nomlar", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScript oddiy imkoniyatni qanday o'qitamiz?",
+        "options": ["bich", "inspected", "server or serverless", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScript ob'ektlarida barrierlar qanday aniqlanishi mumkin?",
+        "options": ["class = Block", "class = Barrier", "instance = Block", "none"],
+        "answer": 0
+    },
+    {
+        "question": "TypeScriptda ishni tashkil etish qaysi vazifadagi dasturlar bilan ishlaydi?",
+        "options": ["loading", "importing", "data retrieval", "none"],
+        "answer": 0
+    }
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+let timer;
+const timeLimit = 20;
+const wrongAnswers = []; // Xato berilgan savollar uchun ro'yxat
+
+function loadQuiz() {
+    const quizContainer = document.getElementById('quiz');
+    const timerElem = document.getElementById('timer');
+    quizContainer.innerHTML = '';
+    timerElem.innerHTML = `20 soniya qoldi!`;
+
+    const q = quizQuestions[currentQuestionIndex];
+
+    const questionElem = document.createElement('div');
+    questionElem.classList.add('question');
+    questionElem.innerHTML = `<p>${currentQuestionIndex + 1}. ${q.question}</p>`;
+
+    q.options.forEach((option, i) => {
+        questionElem.innerHTML += `
+            <label>
+                <input type="radio" name="question${currentQuestionIndex}" value="${i}" onchange="checkAnswer(this)"> ${option}
+            </label><br>
+        `;
+    });
+
+    quizContainer.appendChild(questionElem);
+
+    startTimer();
+}
+
+function startTimer() {
+    let timeRemaining = timeLimit;
+    const timerElem = document.getElementById('timer');
+
+    timer = setInterval(() => {
+        timeRemaining--;
+        timerElem.innerHTML = `${timeRemaining} soniya qoldi!`;
+
+        if (timeRemaining <= 0) {
+            clearInterval(timer);
+            moveToNextQuestion();  // Vaqt tugaganida keyingi savolga o'tish
+        }
+    }, 1000);
+}
+
+function checkAnswer(selectedOption) {
+    clearInterval(timer); // Timerni to'xtatish
+    const q = quizQuestions[currentQuestionIndex];
+
+    // Javobni tekshirish
+    if (parseInt(selectedOption.value) === q.answer) {
+        score++;
+    } else {
+        wrongAnswers.push(currentQuestionIndex); // Xato javob berilgan savol indeksini saqlash
+    }
+
+    moveToNextQuestion(); // Keyingi savolga o'ting
+}
+
+function moveToNextQuestion() {
+    if (currentQuestionIndex < quizQuestions.length - 1) {
+        currentQuestionIndex++;
+        loadQuiz();  // Yangi savolni yuklash
+    } else {
+        showResults(); // Savollar tugadi, natijalarni ko'rsatish
+    }
+}
+
+function showResults() {
+    clearInterval(timer);
+    const resultElem = document.getElementById('result');
+    let resultHTML = `<h2>Natijalar</h2><p>Siz ${score} ta savolga to'g'ri javob berdingiz!</p>`;
+
+    if (wrongAnswers.length > 0) {
+        resultHTML += "<h3>Xato berilgan savollar:</h3>";
+        wrongAnswers.forEach(index => {
+            const question = quizQuestions[index];
+            resultHTML += `<p>${index + 1}. ${question.question} <br> To'g'ri javob: ${question.options[question.answer]}</p>`;
+        });
+    }
+
+    resultElem.innerHTML = resultHTML;
+}
+
+document.getElementById('submit').addEventListener('click', showResults);
+
+loadQuiz();
+</script>
+
+</body>
+</html>

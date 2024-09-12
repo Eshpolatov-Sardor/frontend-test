@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue js Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .question {
+            margin: 10px 0;
+        }
+        button {
+            margin-top: 20px;
+        }
+        .timer {
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Vue js Test 81 ta</h1>
+
+<div id="quiz">
+    <!-- Savollar joylanadi -->
+</div>
+
+<div id="timer" class="timer">20 soniya qoldi!</div>
+<div>
+    <button id="submit">Natijani ko'rsatish</button>
+</div>
+<div id="result"></div>
+
+<script>
+const quizQuestions = [
+    {
+        "question": "Vue.js nima?",
+        "options": ["JavaScript Framework", "CSS Framework", "HTML Template Engine", "PHP Framework"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da komponentlar qayerda yaratiladi?",
+        "options": ["App.vue faylida", "components direktoriyasida", "src direktoriyasida", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Vue.js-da reaktiv ma'lumotlarni qanday e'lon qilamiz?",
+        "options": ["data() funksiyasi orqali", "data: { } orqali", "create-reactive() orqali", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da shartli render qilish uchun qaysi direktiv ishlatiladi?",
+        "options": ["v-if", "v-show", "v-else", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da qanday qilib ro'yxatlar bilan ishlaymiz?",
+        "options": ["v-for", "v-repeat", "v-list", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da qanday qilib kod ni kompilyatsiyalashda ishlatamiz?",
+        "options": ["webpack", "npm", "vue-cli", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Vue.js-da ikki tomonlama ma'lumot bog'lanishi qanday hosil qilinadi?",
+        "options": ["v-model", "v-bind", "v-if", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da komponentlar orasida ma'lumotlarni qanday uzatamiz?",
+        "options": ["props", "emit", "events", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Vue.js-da event handler qaysi prefiks bilan yoziladi?",
+        "options": ["v-on:", "@", "on:", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Vue.js-da variantni qanday yozamiz?",
+        "options": ["computed", "watch", "methods", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Vue.js-da router qanday qo'llaniladi?",
+        "options": ["vue-router", "vue-link", "router-view", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da qaysi metoddan foydalanib xatolarni tutamiz?",
+        "options": ["errorHandler", "created", "mounted", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da 'watch' ning funktsiyasi nima?",
+        "options": ["Reaktiv o'zgarishlarni kuzatish", "Eventlarni boshqarish", "Qayta ishga tushirish", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js dasturi qayerda boshlanadi?",
+        "options": ["Vue instance yaratishda", "App.vue faylida", "src/index.js faylida", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da qaysi direktiva HTML-ni manipulyatsiya qilish uchun ishlatiladi?",
+        "options": ["v-html", "v-text", "v-bind", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da xatoliklar qanday nigohlash uchun ishlatamiz?",
+        "options": ["errorCaptured", "errorHandler", "catch", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da rerender hodisasi qachon yuz beradi?",
+        "options": ["Data o'zgardi", "Komponent o'zgardi", "Qo'shildi yangi prop", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Vue.js-da global mixin-ning maqsadi nima?",
+        "options": ["Barcha komponentlar uchun umumiy kodlar berish", "Xususiy mixin yaratish", "Barcha metodlarni bir joyga yig'ish", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da qaysi xususiyat yordamida formalarni ko'rsatamiz?",
+        "options": ["v-model", "v-show", "v-if", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da 'path' qayerda ishlatiladi?",
+        "options": ["Routingda", "Muammo bo'yicha", "Yozma ma'lumotlarda", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da qaysi method haydashtirilgan xatolarni hal qiladi?",
+        "options": ["instance", "computed", "watch", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da komponentlarni dinamik yuklash qaysi usul bilan amalga oshiriladi?",
+        "options": ["import() funksiyasi", "require()", "load()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da qisqa ro'yxatlar bilan qanday ishlaymiz?",
+        "options": ["v-for", "v-list", "v-each", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da dasturga yo'lni ko'rsatish qaysi komponent bilan bo'ladi?",
+        "options": ["RouterView", "Link", "Route", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da qaysi xususiyat to'liq reaktivlikni ta'minlaydi?",
+        "options": ["data()", "methods", "computed", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da qachon komponent o'rnashishi ro'y beradi?",
+        "options": ["Mounted", "Created", "Destroyed", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da qaysi xususiyat formalarni ko'rsatish uchun ishlatiladi?",
+        "options": ["v-model", "v-if", "v-show", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da 'v-bind' qachon ishlatiladi?",
+        "options": ["Prop'lar qo'shish uchun", "CSS qo'llash uchun", "HTML qo'llash uchun", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da ro'yxatni qanday tinchlantirish mumkin?",
+        "options": ["v-for", "v-repeat", "v-tin", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da sahnadagi xatoliklarni qanday tuzatamiz?",
+        "options": ["try/catch", "if/else", "errorHandler", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da har qanday komponentda ko'rsatilishi kerak bo'lgan asosiy bog'lanuvchilar qaysilar?",
+        "options": ["props", "data", "methods", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Vue.js-da 'v-show' direktivasining farqi nimalardan iborat?",
+        "options": ["Ko'rsatadi/yashiradi", "Foydalanmaydi", "O'lchov ko'rsatadi", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da template-lar uchun qaysi xususiyatdan foydalanamiz?",
+        "options": ["templatize()", "templateBuilder()", "v-template", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da qaysi xususiyat nazoratni ta'minlaydi?",
+        "options": ["computed", "watch", "methods", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da sahna yuklanganda qanday qilib initial data beramiz?",
+        "options": ["data() funksiyasida", "props orqali", "computed orqali", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da sahna 'destroyed' dagi xatolik qanday aniqlanadi?",
+        "options": ["beforeDestroy()", "destroy()", "destroyed()", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Vue.js-da faylni 'import' va 'require' orqali qanday qilib faylga kengaytiramiz?",
+        "options": ["import `faylni`", "require('faylni')", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Vue.js-dagi komponentda qo'llaniladigan deb bitta fayl hujhati.",
+        "options": ["App.vue", "Main.vue", "Component.vue", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da templating tizimi qanday ishlaydi?",
+        "options": ["DOM manipulyatsiyasi", "JavaScript orqali", "v-bind orqali", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da qaysi usul orqali xatolarni tuzatamiz?",
+        "options": ["try/catch", "errorHandler", "then/catch", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Vue.js-da animatsiya qo'shish uchun qaysi yondashuvdan foydalanamiz?",
+        "options": ["transition klassidan", "animation klassidan", "v-animation", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da sahnada eventlar qanday qo'llaniladi?",
+        "options": ["v-on:", "@", "on:", "Barchasi"],
+        "answer": 3
+    },
+    {
+        "question": "Vue.js-da sahna tugagach, qanday qilib statik ma'lumot beramiz?",
+        "options": ["mounted()", "destroyed()", "created()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da sahna bilan bog'liq 'sazg'lar qanday ko'rinadi?",
+        "options": ["sazg", "methods", "watch", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da sahnalarda error handling qachon zarur bo'ladi?",
+        "options": ["Guria", "Komponent va router", "Sahnalar", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Vue.js-da sahnalardagi query parametrlardan foydalanish qaysi komponent orqali amalga oshiriladi?",
+        "options": ["params", "router", "props", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Vue.js-da eventlarni qanday bir necha joyda bajarish mumkin?",
+        "options": ["@event-name", "event-name", "on-event-name", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da bitta sahnada bir necha xususi qoldirilgan komponentlar orqali qanday ishlaymiz?",
+        "options": ["Vue Router orqali", "props orqali", "data orqali", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da sahna ichida ma'lumotni qaytarish uchun qaysi usuldan foydalanamiz?",
+        "options": ["return - data", "export - data", "return()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da sahnalarni qanday qiluvchi yondashuv ishlatiladi?",
+        "options": ["Vue aci", "PageRouter", "React Router", "none"],
+        "answer": 1
+    },
+    {
+        "question": "Vue.js-da sahnani tavsiflovchi xususiyatlar va metodlar to'plami nima?",
+        "options": ["Components", "Sections", "Tap", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da sahnalardagi konfiguratsiyalarni qanday handsizlardan foydalangan holda aniqlaymiz?",
+        "options": ["vue/cli", "npm", "Barchasi", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Vue.js-da modalni qanday yaratish mumkin?",
+        "options": ["v-if orqali", "v-show orqali", "v-for orqali", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da qaysi turdagi tasvirlar yaratiladi?",
+        "options": ["Reusable", "Non-reusable", "Reusable only", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da 'mounted' funktsiyasining roli nima?",
+        "options": ["Sahna o'rnashganda", "Sahna yuklanganda", "O'rnatilmaydi", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da sahna ochilishida qanday qilib ikkilamchi nav o'rnatiladi?",
+        "options": ["open()", "created()", "mounted()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da sahna ichidagi HTML ni qanday ko'rsatamiz?",
+        "options": ["v-html", "html-bind", "inside-html", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da sahna izohlarini ko'rsatish uchun qaysi direktiv ishlatiladi?",
+        "options": ["v-describe", "v-tooltip", "v-comment", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js da state qanday qo'shiladi?",
+        "options": ["data()", "state()", "setState()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js da sahnalar 'destroyed' bo'lganda xatoliklar qanday hal etiladi?",
+        "options": ["beforeDestroy()", "destroy()", "destroyed()", "none"],
+        "answer": 2
+    },
+    {
+        "question": "Vue.js da reaktiv o'zgarishlar haqida nima deydi?",
+        "options": ["Ular o'z-o'zidan boshqariladi", "Boshqa xatti-harakatga bog'liq", "None", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js da eventlar haqida xatoliklarni qanday ko'rsatish mumkin?",
+        "options": ["onkeydown", "onresize", "onscroll", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js da sahna ichida active bo'lishini ko'rsatish uchun qaysi atribut yoziladi?",
+        "options": ["v-bind", "active", "v-active", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da qaysi usul yordamida xml va jason o'rtasida o'zgarish mumkin?",
+        "options": ["v-xml", "v-json", "v-parse", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js da sahna tugaganiga qanday ko'rinishda bo'ladi?",
+        "options": ["destroyed()", "destroying()", "unmount()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js da xarajatlarni ko'rsatish uchun qanday yo'lga qo'yamiz?",
+        "options": ["Vuex", "props", "computed uchun", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js da sahna ichida bazavi qiymatlarini qanday yangilaymiz?",
+        "options": ["set()", "assign()", "inject()", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js da darslar qanday yoziladi?",
+        "options": ["src/class", "app/class", "dars/class", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js da sahna bo'sh qolganligi ochiqmi?",
+        "options": ["Ularning murakkabligi oz", "Hech qanday holat yo'q", "Hisoblanmaydi", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js da ma'lumotlarni qanday erkin xato ko'rinishi hosil bo'ladi?",
+        "options": ["xato ko'rsatish bilan", "ma'lumotni qayd qilishijakan", "ma'lumotni eslab qolish bahosi emash", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js da sahna tugaganida keyin rasmiy xato ko'rsatish hosil bo'ladi?",
+        "options": ["Xatolik", "turli", "Odam", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da sahna tugaganida qanday qilib natijani olish mumkin?",
+        "options": ["Pointer", "Opt-pointers", "Parameter", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da bo'lsin deb iqtibos xo'jayinqa ko'rsatiladi?",
+        "options": ["Xo'jayin bosit қатнашish bilan", "Onlayn dasturlash", "yetadimam", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js da tugmalarda diniy farq xususan qanday yuritiladi?",
+        "options": ["Vuex", "Method", "context", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da sahna panellashdan keyin bemoq bo'ladimi?",
+        "options": ["Baha tayyor davri", "Ma'lumotni beruvchi sahna", "Xato topish bilan", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da templated normalization sifatida qanday imkon bervadi?",
+        "options": ["Sahna normalization", "Manba normalization", "Bo'sh normalization", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da bitta sahna ishida bitta o'zgaruvchida bo'lishi qanday aniqlanadi?",
+        "options": ["Delete", "Bola otish", "O'zgaruvchilar bilan ishlash", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da sahna hosil qilishda qanday tanlovlar ko'rish mumkin?",
+        "options": ["Sensorlar", "Global parametrlar", "Version", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da sahna asosiy dasturida xususi yolxanib, xatolik mumkinmi?",
+        "options": ["Yo'q", "Tarqatuvchi qulayligi", "Teng", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da qaysi sahnalarda dinamik kıyıldırım bo'lib, o'z maqsadlarini belgila bilsa?",
+        "options": ["O'zgaruvchilar", "Tarqatish", "Global sahnalar", "none"],
+        "answer": 0
+    },
+    {
+        "question": "Vue.js-da sahnalarda izohlarga qanday o'lchovlar yozamiz?",
+        "options": ["Bo'sh joylar", "Tizimlar", "Dostlar lenti", "none"],
+        "answer": 0
+    }
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+let timer;
+const timeLimit = 20;
+const wrongAnswers = []; // Xato berilgan savollar uchun ro'yxat
+
+function loadQuiz() {
+    const quizContainer = document.getElementById('quiz');
+    const timerElem = document.getElementById('timer');
+    quizContainer.innerHTML = '';
+    timerElem.innerHTML = `20 soniya qoldi!`;
+
+    const q = quizQuestions[currentQuestionIndex];
+
+    const questionElem = document.createElement('div');
+    questionElem.classList.add('question');
+    questionElem.innerHTML = `<p>${currentQuestionIndex + 1}. ${q.question}</p>`;
+
+    q.options.forEach((option, i) => {
+        questionElem.innerHTML += `
+            <label>
+                <input type="radio" name="question${currentQuestionIndex}" value="${i}" onchange="checkAnswer(this)"> ${option}
+            </label><br>
+        `;
+    });
+
+    quizContainer.appendChild(questionElem);
+
+    startTimer();
+}
+
+function startTimer() {
+    let timeRemaining = timeLimit;
+    const timerElem = document.getElementById('timer');
+
+    timer = setInterval(() => {
+        timeRemaining--;
+        timerElem.innerHTML = `${timeRemaining} soniya qoldi!`;
+
+        if (timeRemaining <= 0) {
+            clearInterval(timer);
+            moveToNextQuestion();  // Vaqt tugaganida keyingi savolga o'tish
+        }
+    }, 1000);
+}
+
+function checkAnswer(selectedOption) {
+    clearInterval(timer); // Timerni to'xtatish
+    const q = quizQuestions[currentQuestionIndex];
+
+    // Javobni tekshirish
+    if (parseInt(selectedOption.value) === q.answer) {
+        score++;
+    } else {
+        wrongAnswers.push(currentQuestionIndex); // Xato javob berilgan savol indeksini saqlash
+    }
+
+    moveToNextQuestion(); // Keyingi savolga o'ting
+}
+
+function moveToNextQuestion() {
+    if (currentQuestionIndex < quizQuestions.length - 1) {
+        currentQuestionIndex++;
+        loadQuiz();  // Yangi savolni yuklash
+    } else {
+        showResults(); // Savollar tugadi, natijalarni ko'rsatish
+    }
+}
+
+function showResults() {
+    clearInterval(timer);
+    const resultElem = document.getElementById('result');
+    let resultHTML = `<h2>Natijalar</h2><p>Siz ${score} ta savolga to'g'ri javob berdingiz!</p>`;
+
+    if (wrongAnswers.length > 0) {
+        resultHTML += "<h3>Xato berilgan savollar:</h3>";
+        wrongAnswers.forEach(index => {
+            const question = quizQuestions[index];
+            resultHTML += `<p>${index + 1}. ${question.question} <br> To'g'ri javob: ${question.options[question.answer]}</p>`;
+        });
+    }
+
+    resultElem.innerHTML = resultHTML;
+}
+
+document.getElementById('submit').addEventListener('click', showResults);
+
+loadQuiz();
+</script>
+
+</body>
+</html>
